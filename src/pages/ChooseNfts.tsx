@@ -60,35 +60,35 @@ const ContentStyle = styled((props: StackProps) => <Stack spacing={5} {...props}
 // ----------------------------------------------------------------------
 
 export default function LandingPage() {
-  const { user, saveSettings } = useAuth();
+  const { user } = useAuth();
   console.log('USER', user);
 
-  const [selected, setSelected] = useState<number[]>(
-    user?.selectedNfts || [...Array(user?.nftList?.length || 0).keys()]
-  );
+  // const [selected, setSelected] = useState<number[]>(
+  //   user?.selectedNfts || [...Array(user?.nftList?.length || 0).keys()]
+  // );
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const navigate = useNavigate();
 
-  if (!user || !user.nftList) navigate('/');
+  // if (!user || !user.nftList) navigate('/');
 
-  const selectNft = (index: number) => () => {
-    console.log('INDEX', index);
-    console.log('SEL', selected);
+  // const selectNft = (index: number) => () => {
+  //   console.log('INDEX', index);
+  //   console.log('SEL', selected);
 
-    setSelected((prev) =>
-      prev.includes(index) ? prev.filter((el) => el !== index) : [...prev, index]
-    );
-  };
+  //   setSelected((prev) =>
+  //     prev.includes(index) ? prev.filter((el) => el !== index) : [...prev, index]
+  //   );
+  // };
 
   const onFinish = async () => {
-    if (Object.keys(selected).length === 0) return;
+    // if (Object.keys(selected).length === 0) return;
     //  setup
     setIsSubmitting(true);
     try {
-      await saveSettings(selected);
+      // await saveSettings(selected);
       setIsSubmitting(false);
-      setTimeout(() => navigate('/off'), 200);
+      // setTimeout(() => navigate('/off'), 200);
     } catch (error) {
       console.log(error);
       setIsSubmitting(false);
@@ -114,47 +114,6 @@ export default function LandingPage() {
                   Choose your NFTs
                 </Typography>
               </Box>
-
-              <Grid
-                container
-                spacing={2}
-                padding={2}
-                sx={{
-                  overflow: 'scroll',
-                  flexGrow: 1,
-                  paddingBottom: 10,
-                  WebkitMaskImage:
-                    '-webkit-gradient(linear,left 70%,left bottom,from(black),to(rgba(0,0,0,0)))'
-                }}
-              >
-                {user?.nftList?.map((nft: string, index: number) => (
-                  <Grid item xs={4} md={2} key={nft} onClick={selectNft(index)}>
-                    <NftCard href={nft} selected={selected.includes(index)} />
-                  </Grid>
-                ))}
-              </Grid>
-              <Stack direction="row" padding={2} spacing={1}>
-                <Button
-                  size="small"
-                  sx={{ color: 'white' }}
-                  onClick={() => setSelected([...Array(user?.nftList?.length || 0).keys()])}
-                >
-                  Select All
-                </Button>
-                <Button size="small" sx={{ color: 'white' }} onClick={() => setSelected([])}>
-                  Deselect All
-                </Button>
-                <Box flexGrow={1} />
-                <LoadingButton
-                  // size="small"
-                  variant="contained"
-                  color="primary"
-                  loading={isSubmitting}
-                  onClick={onFinish}
-                >
-                  Finish
-                </LoadingButton>
-              </Stack>
             </Card>
           </ContentStyle>
         </Container>

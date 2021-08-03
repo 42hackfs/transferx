@@ -35,7 +35,7 @@ type InitialValues = {
   afterSubmit?: string;
 };
 export default function LoginForm() {
-  const { login } = useAuth();
+  // const { login } = useAuth();
   const isMountedRef = useIsMountedRef();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [showPassword, setShowPassword] = useState(false);
@@ -54,7 +54,7 @@ export default function LoginForm() {
     validationSchema: LoginSchema,
     onSubmit: async (values, { setErrors, setSubmitting, resetForm }) => {
       try {
-        await login(values.email, values.password);
+        // await login(values.email, values.password);
         enqueueSnackbar('Login success', {
           variant: 'success',
           action: (key) => (

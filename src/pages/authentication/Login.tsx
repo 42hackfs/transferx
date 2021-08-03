@@ -26,7 +26,6 @@ import AuthLayout from '../../layouts/AuthLayout';
 import Page from '../../components/Page';
 import { varFadeIn, varFadeInUp, varWrapEnter, varFadeInRight } from '../../components/animate';
 import { MHidden } from '../../components/@material-extend';
-import { LoginForm } from '../../components/authentication/login';
 import AuthFirebaseSocials from '../../components/authentication/AuthFirebaseSocial';
 import NftBackground from '../../components/NftBackground';
 import Who from '../Who';
@@ -120,7 +119,7 @@ export default function Login() {
             <motion.div variants={varFadeInRight}>
               <Card>
                 <Stack sx={{ padding: 4 }} spacing={3} direction="column">
-                  <Typography variant="h3">Show your favorite NFTs on Twitter</Typography>
+                  <Typography variant="h3">Connect your wallet</Typography>
                   <Typography variant="h6">Welcome to the future, bro.</Typography>
                   <Typography variant="body1">
                     Here, we display our Crypto Art on Twitter. Every day, your profile picture is

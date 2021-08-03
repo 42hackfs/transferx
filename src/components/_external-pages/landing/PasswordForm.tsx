@@ -28,7 +28,7 @@ import useIsMountedRef from '../../../hooks/useIsMountedRef';
 //
 import { MIconButton } from '../../@material-extend';
 
-import { checkPassword } from '../../../contexts/FirebaseContext';
+// import { checkPassword } from '../../../contexts/FirebaseContext';
 
 // ----------------------------------------------------------------------
 type InitialValues = {
@@ -55,27 +55,27 @@ export default function PasswordForm({ checkPw, setCheckPw }: any) {
     onSubmit: async (values, { setErrors, setSubmitting, resetForm }) => {
       try {
         const pass = values.password;
-        const response = await checkPassword({ data: { pass, paymentId } });
-        if (response.data.verified === true) {
-          setCheckPw(true);
-          enqueueSnackbar('Valid password', {
-            variant: 'success',
-            action: (key) => (
-              <MIconButton size="small" onClick={() => closeSnackbar(key)}>
-                <Icon icon={closeFill} />
-              </MIconButton>
-            )
-          });
-        } else {
-          enqueueSnackbar('Invalid Password', {
-            variant: 'error',
-            action: (key) => (
-              <MIconButton size="small" onClick={() => closeSnackbar(key)}>
-                <Icon icon={closeFill} />
-              </MIconButton>
-            )
-          });
-        }
+        // const response = await checkPassword({ data: { pass, paymentId } });
+        // if (response.data.verified === true) {
+        //   setCheckPw(true);
+        //   enqueueSnackbar('Valid password', {
+        //     variant: 'success',
+        //     action: (key) => (
+        //       <MIconButton size="small" onClick={() => closeSnackbar(key)}>
+        //         <Icon icon={closeFill} />
+        //       </MIconButton>
+        //     )
+        //   });
+        // } else {
+        //   enqueueSnackbar('Invalid Password', {
+        //     variant: 'error',
+        //     action: (key) => (
+        //       <MIconButton size="small" onClick={() => closeSnackbar(key)}>
+        //         <Icon icon={closeFill} />
+        //       </MIconButton>
+        //     )
+        //   });
+        // }
         if (isMountedRef.current) {
           setSubmitting(false);
         }

@@ -25,7 +25,7 @@ import { fCurrency } from '../../../utils/formatNumber';
 import Label from '../../Label';
 import Scrollbar from '../../Scrollbar';
 import MoreMenuButton from '../../MoreMenuButton';
-import { db } from '../../../contexts/FirebaseContext';
+// import { db } from '../../../contexts/FirebaseContext';
 // ----------------------------------------------------------------------
 // ----------------------------------------------------------------------
 
@@ -48,30 +48,30 @@ export default function AppNewInvoice({ paymentId }: { paymentId: string }) {
   const [status, setStatus] = useState('none');
   const [date, setDate] = useState('');
 
-  useEffect(() => {
-    db.collection('confirmedPayment')
-      .doc(paymentId)
-      .get()
-      .then((doc: any) => {
-        if (doc.exists) {
-          console.log('Document data:', doc.data());
-          const data = doc.data();
-          setStakeholder(data.senderName);
-          setTransaction(data.txnHash);
-          setAmount(data.amount);
-          setStatus('success');
-          setDate(data.confirmedAt);
-        } else {
-          // doc.data() will be undefined in this case
-          console.log('No such document! set to pending transaction');
-          setStakeholder('none');
-          setTransaction('none');
-        }
-      })
-      .catch((error) => {
-        console.log('Error getting document:', error);
-      });
-  }, []);
+  // useEffect(() => {
+  //   db.collection('confirmedPayment')
+  //     .doc(paymentId)
+  //     .get()
+  //     .then((doc: any) => {
+  //       if (doc.exists) {
+  //         console.log('Document data:', doc.data());
+  //         const data = doc.data();
+  //         setStakeholder(data.senderName);
+  //         setTransaction(data.txnHash);
+  //         setAmount(data.amount);
+  //         setStatus('success');
+  //         setDate(data.confirmedAt);
+  //       } else {
+  //         // doc.data() will be undefined in this case
+  //         console.log('No such document! set to pending transaction');
+  //         setStakeholder('none');
+  //         setTransaction('none');
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.log('Error getting document:', error);
+  //     });
+  // }, []);
 
   return (
     <Card>

@@ -122,7 +122,7 @@ export default function LandingPage() {
   const navigate = useNavigate();
   const isMountedRef = useIsMountedRef();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  const { addWallet, user, updateProfile } = useAuth();
+  const { connectWallet, user } = useAuth();
   const [open, setOpen] = useState(false);
   // const [paymentLink, setPaymentLink] = useState<string | null>(null);
   // const [sharedTwitter, setSharedTwitter] = useState();
@@ -180,7 +180,7 @@ export default function LandingPage() {
         // console.log(ownerAddress);
         // console.log(user?.id);
         // const userId = user?.id;
-        await addWallet(values.requesterAddress);
+        // await connectWallet(values.requesterAddress);
         // await nftListing({ ownerAddress });
         enqueueSnackbar('openSea Wallet Successfully Synched', {
           variant: 'success',
@@ -213,7 +213,7 @@ export default function LandingPage() {
     onSubmit: async (values, { setErrors, setSubmitting, resetForm }) => {
       try {
         // const ownerAddress = values.requesterAddress;
-        updateProfile({ sharedOnTwitter: true });
+        // updateProfile({ sharedOnTwitter: true });
         enqueueSnackbar('Tweet Successfully Checked', {
           variant: 'success',
           action: (key) => (

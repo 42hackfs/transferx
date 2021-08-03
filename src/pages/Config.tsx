@@ -44,7 +44,6 @@ import ConfigOff from '../components/ConfigOff';
 import useAuth from '../hooks/useAuth';
 import useIsMountedRef from '../hooks/useIsMountedRef';
 import { MIconButton } from '../components/@material-extend';
-import { addWallet } from '../contexts/FirebaseContext';
 import Who from './Who';
 
 // ----------------------------------------------------------------------

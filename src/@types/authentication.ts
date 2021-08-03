@@ -1,4 +1,4 @@
-import firebase from 'firebase/app';
+// import firebase from 'firebase/app';
 
 export type ActionMap<M extends { [index: string]: any }> = {
   [Key in keyof M]: M[Key] extends undefined
@@ -19,19 +19,27 @@ export type AuthState = {
   user: AuthUser;
 };
 
-export type FirebaseContextType = {
+// export type FirebaseContextType = {
+//   isAuthenticated: boolean;
+//   isInitialized: boolean;
+//   user: AuthUser;
+//   method: 'firebase';
+//   login: (email: string, password: string) => Promise<firebase.auth.UserCredential>;
+//   register: (email: string, password: string, firstName: string, lastName: string) => Promise<void>;
+//   loginWithGoogle: () => Promise<firebase.auth.UserCredential>;
+//   loginWithFaceBook: () => Promise<firebase.auth.UserCredential>;
+//   loginWithTwitter: () => Promise<firebase.auth.UserCredential>;
+//   logout: () => Promise<void>;
+//   resetPassword: (email: string) => Promise<void>;
+//   addWallet: (address: string) => Promise<void>;
+//   updateProfile: (data: { [x: string]: any }) => void;
+//   saveSettings: (selected: number[]) => Promise<void>;
+// };
+
+export type Web3ContextType = {
   isAuthenticated: boolean;
   isInitialized: boolean;
   user: AuthUser;
-  method: 'firebase';
-  login: (email: string, password: string) => Promise<firebase.auth.UserCredential>;
-  register: (email: string, password: string, firstName: string, lastName: string) => Promise<void>;
-  loginWithGoogle: () => Promise<firebase.auth.UserCredential>;
-  loginWithFaceBook: () => Promise<firebase.auth.UserCredential>;
-  loginWithTwitter: () => Promise<firebase.auth.UserCredential>;
+  connectWallet: () => Promise<void>;
   logout: () => Promise<void>;
-  resetPassword: (email: string) => Promise<void>;
-  addWallet: (address: string) => Promise<void>;
-  updateProfile: (data: { [x: string]: any }) => void;
-  saveSettings: (selected: number[]) => Promise<void>;
 };

@@ -12,7 +12,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { handleTransaction } from '../../../utils/connectHardWallet';
 import { Payment } from '../../../hooks/usePayment';
-import { savePayment } from '../../../contexts/FirebaseContext';
+// import { savePayment } from '../../../contexts/FirebaseContext';
 
 type InitialValues = {
   senderEmail: string;
@@ -67,8 +67,8 @@ export const MetamaskForm = ({ myWallet, payment }: MetamaskFormProps) => {
         ...values,
         txnHash: txn.hash
       };
-      await savePayment(paymentId, senderInfo);
-    } else {
+      //   await savePayment(paymentId, senderInfo);
+      // } else {
       setView('error');
     }
     return 0;

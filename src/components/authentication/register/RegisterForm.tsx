@@ -26,7 +26,7 @@ type InitialValues = {
 };
 
 export default function RegisterForm() {
-  const { register } = useAuth();
+  // const { register } = useAuth();
   const isMountedRef = useIsMountedRef();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [showPassword, setShowPassword] = useState(false);
@@ -51,7 +51,7 @@ export default function RegisterForm() {
     validationSchema: RegisterSchema,
     onSubmit: async (values, { setErrors, setSubmitting }) => {
       try {
-        await register(values.email, values.password, values.firstName, values.lastName);
+        // await register(values.email, values.password, values.firstName, values.lastName);
         enqueueSnackbar('Register success', {
           variant: 'success',
           action: (key) => (

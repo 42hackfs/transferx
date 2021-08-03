@@ -1,6 +1,6 @@
 import React from 'react';
 // Firebase
-import { db } from '../contexts/FirebaseContext';
+// import { db } from '../contexts/FirebaseContext';
 
 interface Data {
   error: Error | null;
@@ -31,44 +31,44 @@ export function usePayment(id: string) {
     }
   });
 
-  React.useEffect(() => {
-    const unsubscribe = db
-      .collection('pendingPayment')
-      .doc(id)
-      .onSnapshot(
-        (snapshot) => {
-          const response = snapshot.data();
-          setData({
-            error: null,
-            loading: false,
-            payment: {
-              requesterEmail: response?.requesterEmail,
-              requesterName: response?.requesterName,
-              requesterAddress: response?.requesterAddress,
-              token: response?.token,
-              amount: response?.amount,
-              memo: response?.memo,
-              due: response?.due,
-              afterSubmit: response?.afterSubmit
-            }
-          });
-        },
-        (error) => {
-          setData({
-            error,
-            loading: false,
-            payment: {
-              requesterEmail: '',
-              requesterName: '',
-              requesterAddress: '',
-              token: ''
-            }
-          });
-        }
-      );
+  // React.useEffect(() => {
+  //   const unsubscribe = db
+  //     .collection('pendingPayment')
+  //     .doc(id)
+  //     .onSnapshot(
+  //       (snapshot) => {
+  //         const response = snapshot.data();
+  //         setData({
+  //           error: null,
+  //           loading: false,
+  //           payment: {
+  //             requesterEmail: response?.requesterEmail,
+  //             requesterName: response?.requesterName,
+  //             requesterAddress: response?.requesterAddress,
+  //             token: response?.token,
+  //             amount: response?.amount,
+  //             memo: response?.memo,
+  //             due: response?.due,
+  //             afterSubmit: response?.afterSubmit
+  //           }
+  //         });
+  //       },
+  //       (error) => {
+  //         setData({
+  //           error,
+  //           loading: false,
+  //           payment: {
+  //             requesterEmail: '',
+  //             requesterName: '',
+  //             requesterAddress: '',
+  //             token: ''
+  //           }
+  //         });
+  //       }
+  //     );
 
-    return unsubscribe;
-  }, []);
+  //   return unsubscribe;
+  // }, []);
 
   return data;
 }

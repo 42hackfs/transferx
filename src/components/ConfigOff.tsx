@@ -6,17 +6,17 @@ import useAuth from '../hooks/useAuth';
 
 function ConfigOff() {
   const [state, setState] = useState(true);
-  const { updateProfile } = useAuth();
+  // const { updateProfile } = useAuth();
   // const { reset }
   const navigate = useNavigate();
 
   const handleChange = (setState: any, state: any) => {
     if (!state) {
       setState(true);
-      updateProfile?.({ activated: true });
+      // updateProfile?.({ activated: true });
     } else {
       setState(false);
-      updateProfile?.({ activated: false });
+      // updateProfile?.({ activated: false });
     }
   };
 
