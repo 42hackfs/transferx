@@ -104,7 +104,7 @@ type InitialValues = {
   // requesterAddress: string;
   // token: string;
   // amount?: number;
-  title: string;
+  // title: string;
   memo?: string;
   due?: number | null;
   afterSubmit?: string;
@@ -120,7 +120,7 @@ export default function LandingPage() {
   const [paymentLink, setPaymentLink] = useState<string | null>(null);
 
   const LoginSchema = Yup.object().shape({
-    title: Yup.string().required('File title is required')
+    // title: Yup.string().required('File title is required')
     // requesterEmail: Yup.string()
     //   .email('Email must be a valid email address')
     //   .required('Email is required'),
@@ -138,7 +138,7 @@ export default function LandingPage() {
 
   const formik = useFormik<InitialValues>({
     initialValues: {
-      title: ''
+      // title: ''
       // requesterEmail: '',
       // requesterName: '',
       // requesterAddress: '',
@@ -148,8 +148,8 @@ export default function LandingPage() {
     onSubmit: async (values, { setErrors, setSubmitting, resetForm }) => {
       try {
         console.log({
-          ...values,
-          due: values.due ? new Date(values.due).toISOString() : null
+          ...values
+          // due: values.due ? new Date(values.due).toISOString() : null
         });
         const id = Math.floor(Math.random() * 10);
         // ===========================================================
