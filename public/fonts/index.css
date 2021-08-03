@@ -1,0 +1,43 @@
+/* @font-face {
+  font-family: 'CircularStd';
+  font-weight: 400;
+  font-style: normal;
+  src: local('CircularStd'), url('CircularStd-Book.otf') format('opentype');
+}
+@font-face {
+  font-family: 'CircularStd';
+  font-weight: 500;
+  font-style: normal;
+  src: local('CircularStd'), url('CircularStd-Medium.otf') format('opentype');
+}
+@font-face {
+  font-family: 'CircularStd';
+  font-weight: 700;
+  font-style: normal;
+  src: local('CircularStd'), url('CircularStd-Bold.otf') format('opentype');
+} */
+@font-face {
+  font-family: 'SFProText';
+  font-weight: 500;
+  font-style: normal;
+  src: local('SFProText'), url('SF-Pro-Text-Medium.otf') format('opentype');
+}
+@font-face {
+  font-family: 'SFProText';
+  font-weight: 700;
+  font-style: normal;
+  src: local('SFProText'), url('SF-Pro-Text-Bold.otf') format('opentype');
+}
+@font-face {
+  font-family: 'SFProText';
+  font-weight: 200;
+  font-style: normal;
+  src: local('SFProText'), url('SF-Pro-Text-Light.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'Roobert';
+  font-weight: 600;
+  font-style: normal;
+  src: local('Roobert'), url('Roobert-SemiBold.otf') format('opentype');
+}
