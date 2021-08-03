@@ -2,14 +2,6 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## 1.install
 
-### npm
-
-```
-npm i
-or
-npm i --legacy-peer-deps
-```
-
 ### yarn
 
 ```
@@ -19,15 +11,13 @@ yarn install
 ## 2.Start
 
 ```sh
-npm start
-or
 yarn start
 ```
 
 ## 2.Build
 
 ```sh
-npm run build or yarn build
+yarn build
 ```
 
 Builds the app for production to the `build` folder.<br>
