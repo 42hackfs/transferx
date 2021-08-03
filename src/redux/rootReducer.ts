@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 // import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 // slices
-// import userReducer from './slices/user';
+import userReducer from './slices/user';
 
 // ----------------------------------------------------------------------
 
@@ -21,7 +21,7 @@ const rootPersistConfig = {
 // };
 
 const rootReducer = combineReducers({
-  // user: userReducer
+  user: userReducer
   // product: persistReducer(productPersistConfig, productReducer)
 });
 

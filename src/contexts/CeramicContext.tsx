@@ -59,8 +59,8 @@ export async function getProvider(): Promise<DIDProvider> {
 }
 
 const initialState: AuthState = {
-  isAuthenticated: false,
-  isInitialized: false,
+  isAuthenticated: true,
+  isInitialized: true,
   user: null
 };
 
