@@ -6,7 +6,7 @@ import { useEffect, useMemo } from "react";
 import {
   alpha,
   // makeStyles,
-  experimentalStyled as styled,
+  styled,
   Theme,
 } from "@material-ui/core/styles";
 import { Box } from "@material-ui/core";
@@ -43,13 +43,13 @@ import Logo from "./Logo";
 //   },
 // }));
 
-// const RootStyle = styled("div")(({ theme }: { theme: Theme }) => ({
-//   height: "100%",
-//   display: "flex",
-//   alignItems: "center",
-//   justifyContent: "center",
-//   backgroundColor: theme.palette.background.default,
-// }));
+const RootStyle = styled("div")(({ theme }: { theme: Theme }) => ({
+  height: "100%",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  backgroundColor: theme.palette.background.default,
+}));
 
 // ----------------------------------------------------------------------
 
@@ -65,7 +65,7 @@ export default function LoadingScreen({ ...other }) {
   // }, []);
 
   return (
-    <div {...other}>
+    <RootStyle {...other}>
       <motion.div
         initial={{ rotateY: 0 }}
         animate={{ rotateY: 360 }}
@@ -120,6 +120,6 @@ export default function LoadingScreen({ ...other }) {
             `solid 8px ${alpha(theme.palette.primary.dark, 0.24)}`,
         }}
       /> */}
-    </div>
+    </RootStyle>
   );
 }

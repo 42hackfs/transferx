@@ -13,7 +13,7 @@ import {
 import typography from "./typography";
 import breakpoints from "./breakpoints";
 import GlobalStyles from "./globalStyles";
-// import componentsOverride from './overrides';
+import componentsOverride from "./overrides";
 import shadows, { customShadows } from "./shadows";
 
 // ----------------------------------------------------------------------
@@ -33,7 +33,7 @@ export default function ThemeConfig({ children }: ThemeConfigProps) {
   };
 
   const theme = createTheme(themeOptions);
-  // theme.components = componentsOverride(theme);
+  theme.components = componentsOverride(theme);
 
   return (
     // <StyledEngineProvider injectFirst>
