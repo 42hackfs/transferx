@@ -1,0 +1,20 @@
+{
+  "short_name": "SHOW MY NFT",
+  "name": "SHOW MY NFT - Every day, your profile picture is updated randomly based on your NFT collection.",
+  "icons": [
+    {
+      "src": "favicon/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "favicon/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
