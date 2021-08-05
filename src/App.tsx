@@ -135,14 +135,14 @@ const authenticate = async (): Promise<string> => {
 
 const connectWallet = () => {
   console.log("connnect");
-  // authenticate().then(
-  //   (id) => {
-  //     console.log("Connected with DID:", id);
-  //   },
-  //   (err) => {
-  //     console.error("Failed to authenticate:", err);
-  //   }
-  // );
+  authenticate().then(
+    (id) => {
+      console.log("Connected with DID:", id);
+    },
+    (err) => {
+      console.error("Failed to authenticate:", err);
+    }
+  );
 };
 
 export default function App() {
