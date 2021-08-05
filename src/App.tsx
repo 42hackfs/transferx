@@ -126,15 +126,26 @@ const authenticate = async (): Promise<string> => {
     provider: provider,
     resolver: resolverRegistry,
   });
+  console.log("did", did);
   await did.authenticate();
   await ceramic.setDID(did);
   const idx = createIDX(ceramic);
   window.did = ceramic.did;
+  console.log("idx", idx);
+  console.log("did", ceramic.did);
   return idx.id;
 };
 
 const connectWallet = () => {
   console.log("connnect");
+  // try {
+  //   const id = await authenticate();
+  //   if (id) {
+  //     console.log("Connected with DID:", id);
+  //   }
+  // } catch (err) {
+  //   console.log(err);
+  // }
   authenticate().then(
     (id) => {
       console.log("Connected with DID:", id);

@@ -1,6 +1,6 @@
-import { createDefinition, publishSchema } from "@ceramicstudio/idx-tools";
-// import type { JWE } from "did-jwt";
-// import type { DID } from "dids";
+// import { createDefinition, publishSchema } from "@ceramicstudio/idx-tools";
+import type { JWE } from "did-jwt";
+import type { DID } from "dids";
 // import { SkynetClient, genKeyPairFromSeed } from "skynet-js";
 // import { fromString, toString } from "uint8arrays";
 
