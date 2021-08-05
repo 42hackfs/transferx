@@ -8,6 +8,6 @@ import LoadingButton from "./LoadingButton";
 
 // ----------------------------------------------------------------------
 
-export default function ComponentsOverrides(theme: Theme) {
-  return merge(Card(theme), Button(theme), LoadingButton(theme));
+export default function ComponentsOverrides() {
+  return merge(Card(), Button(), LoadingButton());
 }
