@@ -18,6 +18,7 @@ import LoadingScreen from "./components/LoadingScreen";
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
 import { Web3Storage } from "web3.storage";
+import { AddFiles } from "./AddFiles";
 
 function getAccessToken() {
   // If you're just testing, you can paste in a token
@@ -45,6 +46,7 @@ export default function App() {
           Connect your wallet
         </Typography>
       </Container>
+      <AddFiles />
     </ThemeConfig>
     //   <RtlLayout>
     //     <NotistackProvider>
