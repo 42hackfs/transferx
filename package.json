@@ -25,6 +25,7 @@
     "core-js": "^3.16.0",
     "dag-jose": "^1.0.0",
     "dids": "^2.4.0",
+    "dotenv-webpack": "^7.0.3",
     "formik": "^2.2.9",
     "fortmatic": "^2.2.1",
     "framer-motion": "^4.1.17",
