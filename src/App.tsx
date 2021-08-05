@@ -51,6 +51,9 @@ const ContentStyle = styled((props: BoxProps) => <Box {...props} />)(
     margin: "auto",
     textAlign: "center",
     position: "relative",
+    gap: 20,
+    display: "flex",
+    flexDirection: "column",
     paddingTop: theme.spacing(12),
     paddingBottom: theme.spacing(8),
     [theme.breakpoints.up("md")]: {
@@ -100,24 +103,14 @@ export default function App() {
         <Container maxWidth="md">
           <ContentStyle>
             <Card>
-              
-              <Box
-                p={3}
-                display="flex"
-                flexDirection="column"
-                justifyContent="center"
-              >
-                <Typography variant="h4" color="primary">
-                  Connect your wallet
-                </Typography>
-                <Button variant="contained" color="primary">
-                  Connect
-                </Button>
-              </Box>
+              <Typography variant="h4">Connect your wallet</Typography>
+              <Button variant="contained" color="primary">
+                Connect
+              </Button>
             </Card>
+            <AddFiles />
           </ContentStyle>
         </Container>
-        <AddFiles />
       </DivStyle>
     </ThemeConfig>
   );

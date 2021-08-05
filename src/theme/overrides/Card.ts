@@ -15,6 +15,11 @@ export default function Card() {
         color: "white",
         border: "1px solid white",
         zIndex: 0, // Fix Safari overflow: hidden with border radius
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        gap: 20,
+        padding: 20,
       },
     },
   };
