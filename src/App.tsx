@@ -24,7 +24,8 @@ import {
   Button,
 } from "@material-ui/core";
 import { styled, Theme } from "@material-ui/core/styles";
-
+import { Web3Storage } from "web3.storage";
+import { AddFiles } from "./AddFiles";
 import LoadingScreen from "./components/LoadingScreen";
 
 const DivStyle = styled(motion.div)(({ theme }: { theme: Theme }) => ({
@@ -61,9 +62,26 @@ const ContentStyle = styled((props: BoxProps) => <Box {...props} />)(
   })
 );
 
+
+function getAccessToken() {
+  // If you're just testing, you can paste in a token
+  // and uncomment the following line:
+  return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDBEZkFlODM5QzllMDE0ZTVkN2VBNjQ3RkIxQ2Q3ZjZkOUEwN2M1ZTUiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2MjgwMTAyOTI1OTMsIm5hbWUiOiJtYXRoaXMifQ.DKiUfTgLAUufFweDwZiJKqvS1vdBD3_-sd4c3-mUCaY";
+
+  // In a real app, it's better to read an access token from an
+  // environement variable or other configuration that's kept outside of
+  // your code base. For this to work, you need to set the
+  // WEB3STORAGE_TOKEN environment variable before you run your code.
+  //   return process.env.WEB3STORAGE_TOKEN;
+}
+
+function makeStorageClient() {
+  return new Web3Storage({ token: getAccessToken() });
+}
+
 export default function App() {
   // const { isInitialized } = useAuth();
-
+  console.log(makeStorageClient());
   return (
     <ThemeConfig>
       <DivStyle>
@@ -86,6 +104,7 @@ export default function App() {
             </Card>
           </ContentStyle>
         </Container>
+        <AddFiles />
       </DivStyle>
     </ThemeConfig>
   );
