@@ -22,6 +22,7 @@ import {
   Box,
   BoxProps,
   Button,
+  CardProps,
 } from "@material-ui/core";
 import { styled, Theme } from "@material-ui/core/styles";
 import { Web3Storage } from "web3.storage";
@@ -62,6 +63,17 @@ const ContentStyle = styled((props: BoxProps) => <Box {...props} />)(
   })
 );
 
+// const CardStyle = styled((props: CardProps) => <Card {...props} />)(
+//   ({ theme }) => ({
+//     position: "relative",
+//     backgroundColor: "rgba(255, 255, 255, .10)",
+//     backdropFilter: "blur(10px)",
+//     WebkitBackdropFilter: "blur(10px)",
+//     color: "white",
+//     border: "1px solid white",
+//     zIndex: 0, // Fix Safari overflow: hidden with border radius
+//   })
+// );
 
 function getAccessToken() {
   // If you're just testing, you can paste in a token
@@ -88,6 +100,7 @@ export default function App() {
         <Container maxWidth="md">
           <ContentStyle>
             <Card>
+              
               <Box
                 p={3}
                 display="flex"

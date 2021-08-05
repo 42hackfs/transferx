@@ -25,15 +25,16 @@ type ThemeConfigProps = {
 export default function ThemeConfig({ children }: ThemeConfigProps) {
   const isLight = true;
 
-  const themeOptions: ThemeOptions = {
+  const themeOptions: any = {
     typography,
     breakpoints,
+    overrides: componentsOverride(),
     shadows: isLight ? shadows.light : shadows.dark,
     customShadows: isLight ? customShadows.light : customShadows.dark,
   };
 
   const theme = createTheme(themeOptions);
-  theme.components = componentsOverride(theme);
+  // theme.components = componentsOverride(theme);
 
   return (
     // <StyledEngineProvider injectFirst>
