@@ -103,19 +103,10 @@ export default function App() {
         <Container maxWidth="md">
           <ContentStyle>
             <Card>
-              {/* <Box
-                p={3}
-                display="flex"
-                flexDirection="column"
-                justifyContent="center"
-              > */}
-              <Typography variant="h4" color="primary">
-                Connect your wallet
-              </Typography>
+              <Typography variant="h4">Connect your wallet</Typography>
               <Button variant="contained" color="primary">
                 Connect
               </Button>
-              {/* </Box> */}
             </Card>
             <AddFiles />
           </ContentStyle>
