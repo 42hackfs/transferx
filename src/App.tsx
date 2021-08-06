@@ -27,6 +27,7 @@ import {
 import { styled, Theme } from "@material-ui/core/styles";
 import { Web3Storage } from "web3.storage";
 import { AddFiles } from "./AddFiles";
+import Dropzone from "./Dropzone";
 import LoadingScreen from "./components/LoadingScreen";
 
 const DivStyle = styled(motion.div)(({ theme }: { theme: Theme }) => ({
@@ -103,12 +104,12 @@ export default function App() {
         <Container maxWidth="md">
           <ContentStyle>
             <Card>
-              <Typography variant="h4">Connect your wallet</Typography>
+              <Typography variant="h5">Connect your wallet</Typography>
               <Button variant="contained" color="primary">
                 Connect
               </Button>
             </Card>
-            <AddFiles />
+            <Dropzone />
           </ContentStyle>
         </Container>
       </DivStyle>
