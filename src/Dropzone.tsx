@@ -11,13 +11,31 @@ import {
   ListItemSecondaryAction,
   Card,
   IconButton,
+  TextField,
 } from "@material-ui/core";
+
+import { styled, Theme } from "@material-ui/core/styles";
 
 import AddIcon from "@material-ui/icons/AddCircleOutline";
 import CloseIcon from "@material-ui/icons/Close";
 
+const DivStyle = styled("div")(({ theme }: { theme: Theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  padding: "20px 30px",
+  border: "1px solid white",
+  borderRadius: 5,
+  gap: 20,
+  "&:hover": {
+    border: "1px solid black",
+    cursor: "pointer",
+  },
+}));
+
 function Dropzone(): React.ReactElement {
   const [files, setFiles] = useState<File[]>([]);
+  const [title, setTitle] = useState("");
+  const [message, setMessage] = useState("");
 
   const onDrop = useCallback((acceptedFiles) => {
     // Do something with the files
@@ -32,8 +50,12 @@ function Dropzone(): React.ReactElement {
     setFiles((prev) => prev.filter((_, i) => index !== i));
   };
 
+  const handleSubmit = () => {
+    console.log("Submit:", { files, title, message });
+  };
+
   return (
-    <Card style={{ maxHeight: 600 }}>
+    <Card>
       <input {...getInputProps()} />
       {isDragActive ? (
         <div {...getRootProps()}>
@@ -44,7 +66,7 @@ function Dropzone(): React.ReactElement {
             justifyContent="center"
             alignItems="center"
           >
-            <Typography variant="h4">Drop it like it&apos;s hot...</Typography>
+            <Typography variant="h4">Drop your files here.</Typography>
           </Box>
         </div>
       ) : (
@@ -74,22 +96,9 @@ function Dropzone(): React.ReactElement {
               </List>
             </Box>
           )}
-          <Box
-            px={3}
-            py={1}
-            sx={{ border: "1px solid white", borderRadius: 5 }}
-            display="flex"
-            alignItems="center"
-          >
+          <DivStyle {...getRootProps()}>
             <AddIcon />
-            <div
-              {...getRootProps()}
-              style={{
-                textAlign: "left",
-                paddingLeft: 20,
-                cursor: "pointer",
-              }}
-            >
+            <div>
               <Typography variant="subtitle1" color="initial">
                 {files.length > 0 ? "Add more files" : "Choose files"}
               </Typography>
@@ -97,8 +106,37 @@ function Dropzone(): React.ReactElement {
                 {files.length} files added
               </Typography>
             </div>
-          </Box>
-          <Button variant="contained" color="primary" fullWidth>
+          </DivStyle>
+          <div
+            style={{
+              gap: 20,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+            }}
+          >
+            <TextField
+              id="title"
+              label="Title"
+              variant="outlined"
+              value={title}
+              onChange={({ target }) => setTitle(target.value)}
+            />
+            <TextField
+              id="message"
+              label="Message"
+              multiline
+              variant="outlined"
+              value={message}
+              onChange={({ target }) => setMessage(target.value)}
+            />
+          </div>
+          <Button
+            variant="contained"
+            color="primary"
+            fullWidth
+            onClick={handleSubmit}
+          >
             Upload
           </Button>
         </>
