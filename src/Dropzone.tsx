@@ -18,6 +18,7 @@ import { styled, Theme } from "@material-ui/core/styles";
 
 import AddIcon from "@material-ui/icons/AddCircleOutline";
 import CloseIcon from "@material-ui/icons/Close";
+import { storeWithProgress } from "./web3storage";
 
 const DivStyle = styled("div")(({ theme }: { theme: Theme }) => ({
   display: "flex",
@@ -50,8 +51,11 @@ function Dropzone(): React.ReactElement {
     setFiles((prev) => prev.filter((_, i) => index !== i));
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     console.log("Submit:", { files, title, message });
+    // Start loading here
+    // Close loading component here
+    await storeWithProgress(files);
   };
 
   return (

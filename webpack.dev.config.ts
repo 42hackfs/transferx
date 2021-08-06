@@ -36,21 +36,6 @@ const config: webpack.Configuration = {
   },
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
-    fallback: {
-      // tls: false,
-      // net: false,
-      // path: false,
-      // zlib: false,
-      // http: false,
-      // https: false,
-      // stream: false,
-      // os: false,
-      // "crypto-browserify": require.resolve("crypto-browserify"), //if you want to use this module also don't forget npm i crypto-browserify
-      stream: require.resolve("stream-browserify"),
-      http: require.resolve("stream-http"),
-      https: require.resolve("https-browserify"),
-      os: require.resolve("os-browserify/browser"),
-    },
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -63,13 +48,14 @@ const config: webpack.Configuration = {
     new ESLintPlugin({
       extensions: ["js", "jsx", "ts", "tsx"],
     }),
-    // new Dotenv(),
     new webpack.DefinePlugin({
       "process.browser": JSON.stringify(""),
       "process.env.NAMESPACE": JSON.stringify("development"),
-      "process.env.CONNECT_IFRAME_URL": JSON.stringify("BASE_CLAY_URL"),
+      "process.env.CONNECT_IFRAME_URL": JSON.stringify(
+        "https://app-clay.3idconnect.org"
+      ),
       "process.env.CONNECT_MANAGE_URL": JSON.stringify(
-        "BASE_CLAY_URL + /management/index.html"
+        "https://app-clay.3idconnect.org/management/index.html"
       ),
       "process.env.NODE_ENV": JSON.stringify("development"),
       "process.env.REACT_APP_MYAPP": JSON.stringify(
