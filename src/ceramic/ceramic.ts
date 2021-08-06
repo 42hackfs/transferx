@@ -10,8 +10,11 @@ declare global {
   }
 }
 
+const API_URL = "https://ceramic-clay.3boxlabs.com";
+// const API_URL = "https://localhost:7007";
+
 export async function createCeramic(): Promise<CeramicApi> {
-  const ceramic = new Ceramic("https://ceramic-clay.3boxlabs.com");
+  const ceramic = new Ceramic(API_URL);
   window.ceramic = ceramic;
   window.TileDocument = TileDocument;
   window.Caip10Link = Caip10Link;
