@@ -71,7 +71,7 @@ function Landing(): React.ReactElement {
             </Button>
           </Card>
         ) : !id ? (
-          <Dropzone />
+          <Dropzone setId={setId} />
         ) : (
           <DisplayLink id={id || ""} />
         )}

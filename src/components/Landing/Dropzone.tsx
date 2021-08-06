@@ -33,7 +33,7 @@ const DivStyle = styled("div")(({ theme }: { theme: Theme }) => ({
   },
 }));
 
-function Dropzone(): React.ReactElement {
+function Dropzone({ setId }: { setId: any }): React.ReactElement {
   const [files, setFiles] = useState<File[]>([]);
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
@@ -55,7 +55,8 @@ function Dropzone(): React.ReactElement {
     console.log("Submit:", { files, title, message });
     // Start loading here
     // Close loading component here
-    await storeWithProgress(files);
+    // const id = await storeWithProgress(files);
+    setId("id");
   };
 
   return (
