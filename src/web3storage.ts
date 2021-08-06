@@ -6,7 +6,7 @@ const client = makeStorageClient();
 function getAccessToken() {
   // This is not safe, as it can be inspected via our app.js file.
   // We should think of a better way
-  return process.env.VUE_APP_WEB3STORAGE_TOKEN || "";
+  return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDBEZkFlODM5QzllMDE0ZTVkN2VBNjQ3RkIxQ2Q3ZjZkOUEwN2M1ZTUiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2MjgwMTAyOTI1OTMsIm5hbWUiOiJtYXRoaXMifQ.DKiUfTgLAUufFweDwZiJKqvS1vdBD3_-sd4c3-mUCaY";
 }
 
 function makeStorageClient() {

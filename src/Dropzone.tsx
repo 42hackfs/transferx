@@ -15,6 +15,7 @@ import {
 
 import AddIcon from "@material-ui/icons/AddCircleOutline";
 import CloseIcon from "@material-ui/icons/Close";
+import { storeWithProgress } from "./web3storage";
 
 function Dropzone(): React.ReactElement {
   const [files, setFiles] = useState<File[]>([]);
@@ -30,6 +31,10 @@ function Dropzone(): React.ReactElement {
 
   const removeFile = (index: number) => () => {
     setFiles((prev) => prev.filter((_, i) => index !== i));
+  };
+
+  const uploadFiles = async () => {
+    await storeWithProgress(files);
   };
 
   return (
@@ -98,7 +103,12 @@ function Dropzone(): React.ReactElement {
               </Typography>
             </div>
           </Box>
-          <Button variant="contained" color="primary" fullWidth>
+          <Button
+            variant="contained"
+            color="primary"
+            fullWidth
+            onClick={uploadFiles}
+          >
             Upload
           </Button>
         </>
