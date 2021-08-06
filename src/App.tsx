@@ -12,7 +12,7 @@ import ThemeConfig from "./theme";
 // import NotistackProvider from './components/NotistackProvider';
 
 // ----------------------------------------------------------------------
-import React from "react";
+import React, { useState } from "react";
 
 import { motion } from "framer-motion";
 import {
@@ -79,35 +79,49 @@ const ContentStyle = styled((props: BoxProps) => <Box {...props} />)(
 //   })
 // );
 
-const connectWallet = () => {
-  authenticate().then(
-    (id) => {
-      console.log("Connected with DID:", id);
-    },
-    (err) => {
-      console.error("Failed to authenticate:", err);
-    }
-  );
-};
-
 export default function App() {
   // const { isInitialized } = useAuth();
+  const [address, setAddress] = useState("");
+
+  const connectWallet = () => {
+    authenticate().then(
+      (id) => {
+        console.log("Connected with DID:", id);
+        const address = id.split(":")[2];
+        const croppedAddress =
+          address.substr(0, 17) +
+          "..." +
+          address.substr(address.length - 17, address.length);
+        setAddress(croppedAddress);
+      },
+      (err) => {
+        console.error("Failed to authenticate:", err);
+        setAddress("");
+      }
+    );
+  };
 
   return (
     <ThemeConfig>
       <DivStyle>
         <Container maxWidth="md">
           <ContentStyle>
-            <Card>
-              <Typography variant="h4">Connect your wallet</Typography>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={connectWallet}
-              >
-                Connect
-              </Button>
-            </Card>
+            {address == "" ? (
+              <Card>
+                <Typography variant="h4">Connect your wallet</Typography>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={connectWallet}
+                >
+                  Connect
+                </Button>
+              </Card>
+            ) : (
+              <Card>
+                <Typography variant="h4">Connected with {address}!</Typography>
+              </Card>
+            )}
             <AddFiles />
           </ContentStyle>
         </Container>
