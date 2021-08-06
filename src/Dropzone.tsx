@@ -34,7 +34,9 @@ function Dropzone(): React.ReactElement {
   };
 
   const uploadFiles = async () => {
+    // Start loading here
     await storeWithProgress(files);
+    // Close loading component here
   };
 
   return (
