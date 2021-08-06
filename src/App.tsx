@@ -28,6 +28,7 @@ import { styled, Theme } from "@material-ui/core/styles";
 import { Web3Storage } from "web3.storage";
 import { AddFiles } from "./AddFiles";
 import { authenticate } from "./ceramic";
+import Dropzone from "./Dropzone";
 import LoadingScreen from "./components/LoadingScreen";
 
 const DivStyle = styled(motion.div)(({ theme }: { theme: Theme }) => ({
@@ -122,7 +123,7 @@ export default function App() {
                 <Typography variant="h4">Connected with {address}!</Typography>
               </Card>
             )}
-            <AddFiles />
+            <Dropzone />
           </ContentStyle>
         </Container>
       </DivStyle>

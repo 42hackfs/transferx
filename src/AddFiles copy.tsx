@@ -5,9 +5,6 @@ import { LinkInfo } from "./LinkInfo";
 import { AddFilesForm } from "./AddFilesForm";
 import Card from "@material-ui/core/Card";
 
-import Dropzone from "./Dropzone";
-import { Typography } from "@material-ui/core";
-
 type InitialValues = {
   // requesterEmail: string;
   // requesterName: string;
@@ -58,8 +55,11 @@ export const AddFiles = () => {
   };
   return (
     <Card>
-      
-      <Dropzone />
+      {link ? (
+        <LinkInfo id={link} reset={reset} />
+      ) : (
+        <AddFilesForm formik={formik} />
+      )}
     </Card>
   );
 };
