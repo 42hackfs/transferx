@@ -5,7 +5,7 @@ import { LinkInfo } from "./LinkInfo";
 import { AddFilesForm } from "./AddFilesForm";
 import Card from "@material-ui/core/Card";
 
-import Dropzone from "./Dropzone";
+import Dropzone from "./components/Landing/Dropzone";
 import { Typography } from "@material-ui/core";
 
 type InitialValues = {

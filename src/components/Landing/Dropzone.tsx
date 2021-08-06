@@ -18,7 +18,7 @@ import { styled, Theme } from "@material-ui/core/styles";
 
 import AddIcon from "@material-ui/icons/AddCircleOutline";
 import CloseIcon from "@material-ui/icons/Close";
-import { storeWithProgress } from "./web3storage";
+import { storeWithProgress } from "../../web3storage";
 
 const DivStyle = styled("div")(({ theme }: { theme: Theme }) => ({
   display: "flex",
@@ -141,7 +141,7 @@ function Dropzone(): React.ReactElement {
             fullWidth
             onClick={handleSubmit}
           >
-            Upload
+            Transfer
           </Button>
         </>
       )}
