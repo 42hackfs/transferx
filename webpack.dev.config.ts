@@ -32,6 +32,10 @@ const config: webpack.Configuration = {
           },
         },
       },
+      {
+        test: /\.(png|jpe?g|gif|ico)$/i,
+        type: "asset/resource",
+      },
     ],
   },
   resolve: {

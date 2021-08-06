@@ -1,15 +1,7 @@
 import React, { Suspense, lazy } from "react";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import {
-  Navigate,
-  useRoutes,
-  useLocation,
-  Switch,
-  Route,
-  BrowserRouter,
-  Redirect,
-} from "react-router-dom";
+import { Switch, Route, BrowserRouter, Redirect } from "react-router-dom";
 // layouts
 import MainLayout from "../layouts/MainLayout";
 import LogOnlyLayout from "../layouts/LogOnlyLayout";
@@ -26,19 +18,22 @@ import Transfer from "../pages/Transfer";
 
 export default function Router() {
   return (
-    <BrowserRouter>
-      <Switch>
-        <Route exact path="/transfer/:id">
-          <Transfer />
-        </Route>
-        <Route exact path="/">
-          <Landing />
-        </Route>
-        <Route path="/">
-          <Redirect to="/" />
-        </Route>
-      </Switch>
-    </BrowserRouter>
+    <>
+      <MainLayout />
+      <BrowserRouter>
+        <Switch>
+          <Route exact path="/transfer/:id">
+            <Transfer />
+          </Route>
+          <Route exact path="/">
+            <Landing />
+          </Route>
+          <Route path="/">
+            <Redirect to="/" />
+          </Route>
+        </Switch>
+      </BrowserRouter>
+    </>
   );
 }
 
