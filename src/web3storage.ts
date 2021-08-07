@@ -47,9 +47,11 @@ async function retrieve(cid: string) {
     for (const file of files) {
       console.log(`${file.cid} -- ${file.name} -- ${file.size}`);
     }
+    return files;
   } else {
     // Something went wrong!
     console.log("No response");
+    return null;
   }
 }
 

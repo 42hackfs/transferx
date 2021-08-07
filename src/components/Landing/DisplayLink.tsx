@@ -58,6 +58,7 @@ function DisplayLink({ id }: { id: string }): React.ReactElement {
         <Tooltip title="Copy Link">
           <DivStyle>
             <Typography variant="h6" component="h2" gutterBottom>
+              {/* Swap this with the actual id once done --> {id} */}
               {process.env.REACT_APP_TRANSFER_URL}/someshorturl
             </Typography>
             <CopyIcon color="inherit" className={classes.copyIcon} />

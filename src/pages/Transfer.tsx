@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Card,
   Typography,
@@ -10,10 +10,13 @@ import {
   ListItem,
   ListSubheader,
 } from "@material-ui/core";
+import { useSnackbar } from "notistack";
 
 import { styled } from "@material-ui/core/styles";
+import { useParams } from "react-router-dom";
 
 import DownloadIcon from "@material-ui/icons/CloudDownload";
+import { retrieve } from "../web3storage";
 
 const ContentStyle = styled((props: BoxProps) => <Box {...props} />)(
   ({ theme }) => ({
@@ -62,10 +65,25 @@ function Transfer(): React.ReactElement {
       },
     ],
   };
+  // const [transfer, setTransfer] = useState(null);
+  const params = useParams<{ id: string }>();
+
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleClick = () => {
     console.log("DOWNLOAD");
   };
+
+  useEffect(() => {
+    async function retrieveFiles() {
+      const files = await retrieve(params.id);
+      console.log(files);
+      if (!files) {
+        enqueueSnackbar("Invalid Link!", { variant: "error" });
+      }
+    }
+    retrieveFiles();
+  }, []);
 
   return (
     <Container maxWidth="sm">
