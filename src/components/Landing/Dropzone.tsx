@@ -12,6 +12,8 @@ import {
   Card,
   IconButton,
   TextField,
+  Backdrop,
+  CircularProgress,
 } from "@material-ui/core";
 
 import { styled, Theme } from "@material-ui/core/styles";
@@ -19,6 +21,8 @@ import { styled, Theme } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/AddCircleOutline";
 import CloseIcon from "@material-ui/icons/Close";
 import { storeWithProgress } from "../../web3storage";
+import { makeStyles } from "@material-ui/styles";
+import { useSnackbar } from "notistack";
 
 const DivStyle = styled("div")(({ theme }: { theme: Theme }) => ({
   display: "flex",
@@ -33,10 +37,21 @@ const DivStyle = styled("div")(({ theme }: { theme: Theme }) => ({
   },
 }));
 
+const useStyles = makeStyles((theme: Theme) => ({
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: "#fff",
+  },
+}));
+
 function Dropzone({ setId }: { setId: any }): React.ReactElement {
+  const classes = useStyles();
   const [files, setFiles] = useState<File[]>([]);
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const { enqueueSnackbar } = useSnackbar();
 
   const onDrop = useCallback((acceptedFiles) => {
     // Do something with the files
@@ -53,100 +68,111 @@ function Dropzone({ setId }: { setId: any }): React.ReactElement {
 
   const handleSubmit = async () => {
     console.log("Submit:", { files, title, message });
-    // Start loading here
-    // Close loading component here
-    // const id = await storeWithProgress(files);
-    setId("id");
+    setLoading(true);
+    try {
+      const id = await storeWithProgress(files);
+      setId(id);
+    } catch (error) {
+      console.log(error);
+      enqueueSnackbar("No files uploaded!", { variant: "error" });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <Card>
-      <input {...getInputProps()} />
-      {isDragActive ? (
-        <div {...getRootProps()}>
-          <Box
-            height={400}
-            width={400}
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-          >
-            <Typography variant="h4">Drop your files here.</Typography>
-          </Box>
-        </div>
-      ) : (
-        <>
-          <Typography variant="h5">Upload your files</Typography>
-          {files.length > 0 && (
-            <Box>
-              <ListSubheader color="inherit">Files</ListSubheader>
-              <List style={{ maxHeight: 280, overflowY: "auto" }}>
-                {files.map((file, index) => (
-                  <ListItem key={index}>
-                    <ListItemText
-                      primary={file.name}
-                      style={{ overflow: "hidden" }}
-                    />
-                    <ListItemSecondaryAction>
-                      <IconButton
-                        edge="end"
-                        aria-label="delete"
-                        onClick={removeFile(index)}
-                      >
-                        <CloseIcon color="primary" />
-                      </IconButton>
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                ))}
-              </List>
+    <div className="container">
+      <Card>
+        <input {...getInputProps()} />
+        {isDragActive ? (
+          <div {...getRootProps()}>
+            <Box
+              height={400}
+              width={400}
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+            >
+              <Typography variant="h4">Drop your files here.</Typography>
             </Box>
-          )}
-          <DivStyle {...getRootProps()}>
-            <AddIcon />
-            <div>
-              <Typography variant="subtitle1" color="initial">
-                {files.length > 0 ? "Add more files" : "Choose files"}
-              </Typography>
-              <Typography variant="caption" color="textSecondary">
-                {files.length} files added
-              </Typography>
-            </div>
-          </DivStyle>
-          <div
-            style={{
-              gap: 20,
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-            }}
-          >
-            <TextField
-              id="title"
-              label="Title"
-              variant="outlined"
-              value={title}
-              onChange={({ target }) => setTitle(target.value)}
-            />
-            <TextField
-              id="message"
-              label="Message"
-              multiline
-              variant="outlined"
-              value={message}
-              onChange={({ target }) => setMessage(target.value)}
-            />
           </div>
-          <Button
-            variant="contained"
-            color="primary"
-            fullWidth
-            onClick={handleSubmit}
-          >
-            Transfer
-          </Button>
-        </>
-      )}
-    </Card>
+        ) : (
+          <>
+            <Typography variant="h5">Upload your files</Typography>
+            {files.length > 0 && (
+              <Box>
+                <ListSubheader color="inherit">Files</ListSubheader>
+                <List style={{ maxHeight: 280, overflowY: "auto" }}>
+                  {files.map((file, index) => (
+                    <ListItem key={index}>
+                      <ListItemText
+                        primary={file.name}
+                        style={{ overflow: "hidden" }}
+                      />
+                      <ListItemSecondaryAction>
+                        <IconButton
+                          edge="end"
+                          aria-label="delete"
+                          onClick={removeFile(index)}
+                        >
+                          <CloseIcon color="primary" />
+                        </IconButton>
+                      </ListItemSecondaryAction>
+                    </ListItem>
+                  ))}
+                </List>
+              </Box>
+            )}
+            <DivStyle {...getRootProps()}>
+              <AddIcon />
+              <div>
+                <Typography variant="subtitle1" color="initial">
+                  {files.length > 0 ? "Add more files" : "Choose files"}
+                </Typography>
+                <Typography variant="caption" color="textSecondary">
+                  {files.length} files added
+                </Typography>
+              </div>
+            </DivStyle>
+            <div
+              style={{
+                gap: 20,
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+              }}
+            >
+              <TextField
+                id="title"
+                label="Title"
+                variant="outlined"
+                value={title}
+                onChange={({ target }) => setTitle(target.value)}
+              />
+              <TextField
+                id="message"
+                label="Message"
+                multiline
+                variant="outlined"
+                value={message}
+                onChange={({ target }) => setMessage(target.value)}
+              />
+            </div>
+            <Button
+              variant="contained"
+              color="primary"
+              fullWidth
+              onClick={handleSubmit}
+            >
+              Transfer
+            </Button>
+          </>
+        )}
+      </Card>
+      <Backdrop className={classes.backdrop} open={loading}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
+    </div>
   );
 }
 export default Dropzone;

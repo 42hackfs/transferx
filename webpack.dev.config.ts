@@ -52,6 +52,7 @@ const config: webpack.Configuration = {
     new ESLintPlugin({
       extensions: ["js", "jsx", "ts", "tsx"],
     }),
+    new Dotenv(),
     new webpack.DefinePlugin({
       "process.browser": JSON.stringify(""),
       "process.env.NAMESPACE": JSON.stringify("development"),
