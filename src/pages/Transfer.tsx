@@ -109,7 +109,8 @@ function Transfer(): React.ReactElement {
               fullWidth
               onClick={handleClick}
             >
-              Download {transfer.files?.length || 0} files
+              Download {transfer.files.length}{" "}
+              {transfer.files.length > 1 ? "files" : "file"}
             </Button>
           </Card>
         ) : (
