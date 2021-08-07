@@ -1,12 +1,11 @@
 import React from "react";
+import Logo from "../components/Logo";
 
 function MainLayout() {
   return (
-    <img
-      src="/favicon/logo.png"
-      alt="logo"
-      style={{ position: "absolute", left: 20, top: 20 }}
-    />
+    <div style={{ position: "absolute", left: 40, top: 20 }}>
+      <Logo />
+    </div>
   );
 }
 
