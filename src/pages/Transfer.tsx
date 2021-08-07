@@ -13,10 +13,19 @@ import {
 import { useSnackbar } from "notistack";
 
 import { styled } from "@material-ui/core/styles";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 
 import DownloadIcon from "@material-ui/icons/CloudDownload";
 import { retrieve } from "../web3storage";
+import { Web3File } from "web3.storage";
+
+interface TransferResponse {
+  address: string;
+  title: string;
+  message: string;
+  created: string;
+  files: Web3File[];
+}
 
 const ContentStyle = styled((props: BoxProps) => <Box {...props} />)(
   ({ theme }) => ({
@@ -43,35 +52,17 @@ const ContentStyle = styled((props: BoxProps) => <Box {...props} />)(
 );
 
 function Transfer(): React.ReactElement {
-  const transfer = {
-    address: "",
-    title: "Sweden",
-    message: "Here are some images",
-    created: new Date().toISOString,
-    files: [
-      {
-        lastModified: 157088592000,
-        name: "2F12396A-4AEA-476A-B1BF-4FEC6EFBDD62.JPG",
-        path: "2F12396A-4AEA-476A-B1BF-4FEC6EFBDD62.JPG",
-        size: 847984,
-        type: "image/jpeg",
-      },
-      {
-        lastModified: 157088592000,
-        name: "puppy.JPG",
-        path: "puppy.JPG",
-        size: 847984,
-        type: "image/jpeg",
-      },
-    ],
-  };
-  // const [transfer, setTransfer] = useState(null);
+  const [transfer, setTransfer] = useState<TransferResponse | null>(null);
   const params = useParams<{ id: string }>();
-
   const { enqueueSnackbar } = useSnackbar();
+  const history = useHistory();
 
   const handleClick = () => {
     console.log("DOWNLOAD");
+  };
+
+  const backToHome = () => {
+    history.push("/");
   };
 
   useEffect(() => {
@@ -80,6 +71,14 @@ function Transfer(): React.ReactElement {
       console.log(files);
       if (!files) {
         enqueueSnackbar("Invalid Link!", { variant: "error" });
+      } else {
+        setTransfer({
+          address: "",
+          title: "Sweden",
+          message: "Here are some images",
+          created: new Date().toISOString(),
+          files,
+        });
       }
     }
     retrieveFiles();
@@ -88,30 +87,46 @@ function Transfer(): React.ReactElement {
   return (
     <Container maxWidth="sm">
       <ContentStyle>
-        <Card>
-          <Typography variant="h4" color="initial">
-            You&apos;ve got mail 📬
-          </Typography>
-          <Box p={3} style={{ borderRadius: 5, border: "1px solid white" }}>
-            <Typography variant="subtitle1" color="initial">
-              {transfer.title}
+        {transfer ? (
+          <Card>
+            <Typography variant="h4" color="initial">
+              You&apos;ve got mail 📬
             </Typography>
-            <Typography variant="caption">{transfer.message}</Typography>
-          </Box>
-          <List style={{ maxHeight: 280, overflowY: "auto" }}>
-            {transfer.files.map((file) => (
-              <ListItem key={file.name}>file.name</ListItem>
-            ))}
-          </List>
-          <Button
-            variant="contained"
-            color="primary"
-            fullWidth
-            onClick={handleClick}
-          >
-            Download {transfer.files?.length || 0} files
-          </Button>
-        </Card>
+            <Box p={3} style={{ borderRadius: 5, border: "1px solid white" }}>
+              <Typography variant="subtitle1" color="initial">
+                {transfer.title}
+              </Typography>
+              <Typography variant="caption">{transfer.message}</Typography>
+            </Box>
+            <List style={{ maxHeight: 280, overflowY: "auto" }}>
+              {transfer.files.map((file) => (
+                <ListItem key={file.name}>{file.name}</ListItem>
+              ))}
+            </List>
+            <Button
+              variant="contained"
+              color="primary"
+              fullWidth
+              onClick={handleClick}
+            >
+              Download {transfer.files?.length || 0} files
+            </Button>
+          </Card>
+        ) : (
+          <Card>
+            <Typography variant="h4" color="initial">
+              Uh oh... This link seems to be broken 🤔
+            </Typography>
+            <Button
+              variant="contained"
+              color="primary"
+              fullWidth
+              onClick={backToHome}
+            >
+              Back to home
+            </Button>
+          </Card>
+        )}
       </ContentStyle>
     </Container>
   );
