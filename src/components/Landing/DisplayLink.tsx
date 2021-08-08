@@ -40,8 +40,6 @@ function DisplayLink({ id }: { id: string }): React.ReactElement {
   const classes = useStyles();
 
   const onCopy = () => {
-    console.log("Copied");
-
     enqueueSnackbar("Copied Link", { variant: "success" });
   };
 

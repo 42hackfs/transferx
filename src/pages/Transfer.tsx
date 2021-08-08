@@ -18,6 +18,8 @@ import { useParams, useHistory } from "react-router-dom";
 import DownloadIcon from "@material-ui/icons/CloudDownload";
 import { retrieve } from "../web3storage";
 import { Web3File } from "web3.storage";
+import JSZip from "jszip";
+import { saveAs } from "file-saver";
 
 interface TransferResponse {
   address: string;
@@ -56,9 +58,15 @@ function Transfer(): React.ReactElement {
   const params = useParams<{ id: string }>();
   const { enqueueSnackbar } = useSnackbar();
   const history = useHistory();
+  const zip = new JSZip();
 
   const handleClick = () => {
-    console.log("DOWNLOAD");
+    for (const file of transfer!.files) {
+      zip.file(file.name, file.arrayBuffer());
+    }
+    zip.generateAsync({ type: "blob" }).then(function (content) {
+      saveAs(content, `${transfer?.title}.zip`);
+    });
   };
 
   const backToHome = () => {
@@ -68,7 +76,7 @@ function Transfer(): React.ReactElement {
   useEffect(() => {
     async function retrieveFiles() {
       const files = await retrieve(params.id);
-      console.log(files);
+
       if (!files) {
         enqueueSnackbar("Invalid Link!", { variant: "error" });
       } else {
