@@ -53,6 +53,7 @@ const config: webpack.Configuration = {
       extensions: ["js", "jsx", "ts", "tsx"],
     }),
     new CleanWebpackPlugin(),
+    new Dotenv(),
     new webpack.DefinePlugin({
       "process.browser": JSON.stringify(""),
       "process.env.NAMESPACE": JSON.stringify("development"),
