@@ -19,8 +19,8 @@ const GlobalStyles = withStyles((theme: Theme) => ({
     body: {
       width: "100%",
       height: "100%",
-      overflow: "hidden",
-      background: `#000000 url(https://pbs.twimg.com/media/E1K9U0NVkAQRBFP?format=jpg&name=large) no-repeat`,
+      overflow: "auto",
+      background: `#000000 url(https://i.ibb.co/DMK6Zys/bg.webp) no-repeat`,
       backgroundSize: "cover",
       backgroundPosition: "center",
       // position: "absolute",

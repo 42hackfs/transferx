@@ -9,10 +9,12 @@ import {
   List,
   ListItem,
   ListSubheader,
+  Backdrop,
+  CircularProgress,
 } from "@material-ui/core";
 import { useSnackbar } from "notistack";
 
-import { styled } from "@material-ui/core/styles";
+import { styled, Theme } from "@material-ui/core/styles";
 import { useParams, useHistory } from "react-router-dom";
 
 import DownloadIcon from "@material-ui/icons/CloudDownload";
@@ -20,6 +22,7 @@ import { retrieve } from "../web3storage";
 import { Web3File } from "web3.storage";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
+import { makeStyles } from "@material-ui/styles";
 
 interface TransferResponse {
   address: string;
@@ -53,12 +56,21 @@ const ContentStyle = styled((props: BoxProps) => <Box {...props} />)(
   })
 );
 
+const useStyles = makeStyles((theme: Theme) => ({
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: "#fff",
+  },
+}));
+
 function Transfer(): React.ReactElement {
   const [transfer, setTransfer] = useState<TransferResponse | null>(null);
+  const [loading, setLoading] = useState(true);
   const params = useParams<{ id: string }>();
   const { enqueueSnackbar } = useSnackbar();
   const history = useHistory();
   const zip = new JSZip();
+  const classes = useStyles();
 
   const handleClick = () => {
     for (const file of transfer!.files) {
@@ -88,6 +100,7 @@ function Transfer(): React.ReactElement {
           files,
         });
       }
+      setLoading(false);
     }
     retrieveFiles();
   }, []);
@@ -95,7 +108,11 @@ function Transfer(): React.ReactElement {
   return (
     <Container maxWidth="sm">
       <ContentStyle>
-        {transfer ? (
+        {loading ? (
+          <Backdrop className={classes.backdrop} open={loading}>
+            <CircularProgress color="inherit" />
+          </Backdrop>
+        ) : transfer ? (
           <Card>
             <Typography variant="h4" color="initial">
               You&apos;ve got mail 📬
