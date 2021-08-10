@@ -64,7 +64,7 @@ function Transfer(): React.ReactElement {
     for (const file of transfer!.files) {
       zip.file(file.name, file.arrayBuffer());
     }
-    zip.generateAsync({ type: "blob" }).then(function (content) {
+    zip.generateAsync({ type: "blob" }).then(function (content: any) {
       saveAs(content, `${transfer?.title}.zip`);
     });
   };

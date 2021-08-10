@@ -56,7 +56,6 @@ const config: webpack.Configuration = {
     new Dotenv(),
     new webpack.DefinePlugin({
       "process.browser": JSON.stringify(""),
-      "process.env.NAMESPACE": JSON.stringify("development"),
       "process.env.CONNECT_IFRAME_URL": JSON.stringify(
         "https://app-clay.3idconnect.org"
       ),
