@@ -1,22 +1,32 @@
 import { Button } from "@material-ui/core";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { authenticate } from "../ceramic";
 import Logo from "../components/Logo";
 
 function MainLayout() {
+  const sessionStorage = window.sessionStorage;
+  const [loading, setLoading] = useState(false);
+  const [ceramicId, setCeramicId] = useState("");
+
   const connectToCeramic = () => {
-    const sessionStorage = window.sessionStorage;
+    setLoading(true);
 
     authenticate()
       .then((id) => {
         console.log("Connected to Ceramic:", id);
         sessionStorage.setItem("ceramicId", id);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
         sessionStorage.setItem("ceramicId", "");
+        setLoading(false);
       });
   };
+
+  useEffect(() => {
+    setCeramicId(sessionStorage.getItem("ceramicId") || "");
+  }, []);
 
   return (
     <div
@@ -38,8 +48,13 @@ function MainLayout() {
         color="primary"
         style={{ position: "absolute", right: 40, top: 20 }}
         onClick={connectToCeramic}
+        disabled={ceramicId != ""}
       >
-        Connect Wallet
+        {loading
+          ? "Connecting..."
+          : ceramicId == ""
+          ? "Connect Wallet"
+          : "Connected"}
       </Button>
     </div>
   );
