@@ -19,7 +19,7 @@ const GlobalStyles = withStyles((theme: Theme) => ({
     body: {
       width: "100%",
       height: "100%",
-      overflow: "hidden",
+      overflow: "auto",
       background: `#000000 url(https://i.ibb.co/DMK6Zys/bg.webp) no-repeat`,
       backgroundSize: "cover",
       backgroundPosition: "center",
