@@ -40,41 +40,36 @@ const ContentStyle = styled((props: BoxProps) => <Box {...props} />)(
 );
 
 function Landing(): React.ReactElement {
-  const [address, setAddress] = useState<null | string>(null);
+  /* const [address, setAddress] = useState<null | string>(null); */
   const [id, setId] = useState<null | string>(null);
 
-  const connectWallet = () => {
-    authenticate().then(
-      (id) => {
-        console.log("Connected with DID:", id);
-        const address = id.split(":")[2];
-        const croppedAddress =
-          address.substr(0, 17) +
-          "..." +
-          address.substr(address.length - 17, address.length);
-        setAddress(croppedAddress);
-      },
-      (err) => {
-        console.error("Failed to authenticate:", err);
-        setAddress("");
-      }
-    );
-  };
+  /* const connectWallet = () => { */
+  /*   authenticate().then( */
+  /*     (id) => { */
+  /*       console.log("Connected with DID:", id); */
+  /*       const address = id.split(":")[2]; */
+  /*       const croppedAddress = */
+  /*         address.substr(0, 17) + */
+  /*         "..." + */
+  /*         address.substr(address.length - 17, address.length); */
+  /*       setAddress(croppedAddress); */
+  /*     }, */
+  /*     (err) => { */
+  /*       console.error("Failed to authenticate:", err); */
+  /*       setAddress(""); */
+  /*     } */
+  /*   ); */
+  /* }; */
   return (
     <Container maxWidth="sm">
       <ContentStyle>
-        {address ? (
-          <Card>
-            <Typography variant="h4">Connect your wallet</Typography>
-            <Button variant="contained" color="primary" onClick={connectWallet}>
-              Connect
-            </Button>
-          </Card>
-        ) : !id ? (
-          <Dropzone setId={setId} />
-        ) : (
-          <DisplayLink id={id || ""} />
-        )}
+        {
+          !id ? (
+            <Dropzone setId={setId} />
+          ) : (
+            <DisplayLink id={id || ""} />
+          )
+        }
       </ContentStyle>
     </Container>
   );
