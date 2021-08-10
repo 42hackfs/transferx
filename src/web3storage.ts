@@ -35,7 +35,7 @@ async function storeWithProgress(files: File[]): Promise<CidString> {
   return client.put(files, { onRootCidReady, onStoredChunk });
 }
 
-async function retrieve(cid: string) {
+async function retrieve(cid: string): Promise<any> {
   const res = await client.get(cid);
   if (res) {
     console.log(`Got a response! [${res.status}] ${res.statusText}`);
@@ -56,7 +56,7 @@ async function retrieve(cid: string) {
   }
 }
 
-async function checkStatus(cid: string) {
+async function checkStatus(cid: string): Promise<any> {
   const client = makeStorageClient();
   const status = await client.status(cid);
   console.log(status);

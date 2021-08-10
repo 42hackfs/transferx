@@ -70,7 +70,7 @@ export async function createSchema(ceramic: CeramicApi): Promise<any> {
 
     const fileDefinition = await createDefinition(ceramic, {
       name: 'file',
-      description: 'Transfer X project',
+      description: 'Transfer X project, format for file and list of files',
       schema: filesListSchema.commitId.toUrl(),
     })
 
@@ -86,6 +86,6 @@ export async function createSchema(ceramic: CeramicApi): Promise<any> {
 
     return config
   } catch (error) {
-    console.error('Oups I did it again => ', error)
+    console.error('Ceramic schema error: \n', error)
   }
 }

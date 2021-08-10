@@ -18,6 +18,6 @@ export async function createStream (ceramic: CeramicApi, config: any): Promise<a
 
     return streamId
   } catch (error) {
-    console.error('Oups I did it again => ', error)
+    console.error('Ceramic stream error: \n', error)
   }
 }

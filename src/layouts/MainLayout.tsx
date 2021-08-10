@@ -5,6 +5,7 @@ import Logo from "../components/Logo";
 
 function MainLayout() {
   const sessionStorage = window.sessionStorage;
+  console.log('sessionStorage', sessionStorage)
   const [loading, setLoading] = useState(false);
   const [ceramicId, setCeramicId] = useState("");
 
@@ -50,11 +51,13 @@ function MainLayout() {
         onClick={connectToCeramic}
         disabled={ceramicId != ""}
       >
-        {loading
+        {
+          loading
           ? "Connecting..."
           : ceramicId == ""
           ? "Connect Wallet"
-          : "Connected"}
+          : "Connected"
+        }
       </Button>
     </div>
   );

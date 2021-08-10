@@ -38,13 +38,13 @@ const authenticate = async (): Promise<string> => {
   window.did = ceramic.did;
 
   // the createSchema will be done once in a script, our website will just need to store the ceramic id to create the stream.
-  // const config = await createSchema(ceramic)
+  const config = await createSchema(ceramic);
 
   // every user will need a stream
-  // const stream = await createStream(ceramic, config)
+  // const stream = await createStream(ceramic, config);
 
-  // console.log('config is : \n', config)
-  // console.log('stream final : ', stream)
+  console.log('config is : \n', config);
+  // console.log('stream final : ', stream);
 
   return idx.id;
 };
