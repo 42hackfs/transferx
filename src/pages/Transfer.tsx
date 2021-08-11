@@ -58,6 +58,8 @@ const ContentStyle = styled((props: BoxProps) => <Box {...props} />)(
 
 const useStyles = makeStyles((theme: Theme) => ({
   backdrop: {
+    display: "flex",
+    flexDirection: "column",
     zIndex: theme.zIndex.drawer + 1,
     color: "#fff",
   },
@@ -66,6 +68,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 function Transfer(): React.ReactElement {
   const [transfer, setTransfer] = useState<TransferResponse | null>(null);
   const [loading, setLoading] = useState(true);
+  const [progress, setProgress] = useState(0);
   const params = useParams<{ id: string }>();
   const { enqueueSnackbar } = useSnackbar();
   const history = useHistory();
@@ -73,12 +76,18 @@ function Transfer(): React.ReactElement {
   const classes = useStyles();
 
   const handleClick = () => {
+    setLoading(true);
     for (const file of transfer!.files) {
       zip.file(file.name, file.arrayBuffer());
     }
-    zip.generateAsync({ type: "blob" }).then(function (content: any) {
-      saveAs(content, `${transfer?.title}.zip`);
-    });
+    zip
+      .generateAsync({ type: "blob", streamFiles: true }, (metadata: any) => {
+        setProgress(metadata.percent);
+        console.log(metadata);
+      })
+      .then(function (content: any) {
+        saveAs(content, `${transfer?.title}.zip`);
+      });
   };
 
   const backToHome = () => {
@@ -87,10 +96,15 @@ function Transfer(): React.ReactElement {
 
   useEffect(() => {
     async function retrieveFiles() {
-      const files = await retrieve(params.id);
-      console.log(files);
+      const response = await retrieve(params.id);
 
-      if (!files) {
+      // unpack File objects from the response
+      const files = await response.files();
+      // for (const file of files) {
+      //   console.log(`${file.cid} -- ${file.name} -- ${file.size}`);
+      // }
+
+      if (!response.ok) {
         enqueueSnackbar("Invalid Link!", { variant: "error" });
       } else {
         setTransfer({
@@ -100,11 +114,19 @@ function Transfer(): React.ReactElement {
           created: new Date().toISOString(),
           files,
         });
+        console.log();
       }
       setLoading(false);
     }
-    retrieveFiles();
-  }, []);
+
+    if (progress <= 0) {
+      retrieveFiles();
+    }
+
+    if (progress >= 100) {
+      setLoading(false);
+    }
+  }, [progress]);
 
   return (
     <Container maxWidth="sm">
@@ -112,6 +134,11 @@ function Transfer(): React.ReactElement {
         {loading ? (
           <Backdrop className={classes.backdrop} open={loading}>
             <CircularProgress color="inherit" />
+            {progress > 0 ? (
+              <h1
+                style={{ color: "white", marginTop: "1rem" }}
+              >{`Zipping... ${progress.toFixed(2)}% complete`}</h1>
+            ) : null}
           </Backdrop>
         ) : transfer ? (
           <Card>
@@ -135,8 +162,7 @@ function Transfer(): React.ReactElement {
               fullWidth
               onClick={handleClick}
             >
-              Download {transfer.files.length}{" "}
-              {transfer.files.length > 1 ? "files" : "file"}
+              Download zip file
             </Button>
           </Card>
         ) : (

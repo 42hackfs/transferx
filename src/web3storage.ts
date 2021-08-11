@@ -23,12 +23,10 @@ async function storeWithProgress(files: File[], callbackFn: (pct: string) => voi
   // when each chunk is stored, update the percentage complete and display
   const totalSize = files.map((f) => f.size).reduce((a, b) => a + b, 0);
   let uploaded = 0;
-  console.log(totalSize)
 
   const onStoredChunk = (size: number) => {
     uploaded += size;
     const pct = (uploaded / totalSize ) * 100;
-    console.log(`Uploading... ${pct.toFixed(2)}% complete`);
     callbackFn(`Uploading... ${pct.toFixed(2)}% complete`)
   };
 
@@ -45,11 +43,6 @@ async function retrieve(cid: string): Promise<any> {
       throw new Error(`failed to get ${cid}`);
     }
 
-    // unpack File objects from the response
-    // const files = await res.files();
-    // for (const file of files) {
-    //   console.log(`${file.cid} -- ${file.name} -- ${file.size}`);
-    // }
     return res;
   } else {
     // Something went wrong!
