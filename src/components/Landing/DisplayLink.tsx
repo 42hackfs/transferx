@@ -50,14 +50,17 @@ function DisplayLink({ id }: { id: string }): React.ReactElement {
         Your transfer link has been created!
       </Typography>
       <CopyToClipboard
-        text={`${process.env.REACT_APP_TRANSFER_URL}/${id}`}
+        text={
+          process.env.NODE_ENV == "development"
+            ? `http://localhost:4000/#/transfer/${id}`
+            : `${process.env.REACT_APP_TRANSFER_URL}/${id}`
+        }
         onCopy={onCopy}
       >
         <Tooltip title="Copy Link">
           <DivStyle>
             <Typography variant="h6" component="h2" gutterBottom>
-              {/* Swap this with the actual id once done --> {id} */}
-              {process.env.REACT_APP_TRANSFER_URL}/${id}
+              saturn.eth/hackfs
             </Typography>
             <CopyIcon color="inherit" className={classes.copyIcon} />
           </DivStyle>

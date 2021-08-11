@@ -64,7 +64,7 @@ const config: webpack.Configuration = {
       "process.env.CONNECT_MANAGE_URL": JSON.stringify(
         "https://app-clay.3idconnect.org/management/index.html"
       ),
-      "process.env.NODE_ENV": JSON.stringify("development"),
+      "process.env.NODE_ENV": JSON.stringify("production"),
       "process.env.REACT_APP_MYAPP": JSON.stringify(
         process.env.REACT_APP_MYAPP
       ),
