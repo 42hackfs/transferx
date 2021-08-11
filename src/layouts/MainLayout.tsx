@@ -5,7 +5,7 @@ import Logo from "../components/Logo";
 
 function MainLayout() {
   const sessionStorage = window.sessionStorage;
-  console.log('sessionStorage', sessionStorage)
+  console.log("sessionStorage", sessionStorage);
   const [loading, setLoading] = useState(false);
   const [ceramicId, setCeramicId] = useState("");
 
@@ -16,11 +16,13 @@ function MainLayout() {
       .then((id) => {
         console.log("Connected to Ceramic:", id);
         sessionStorage.setItem("ceramicId", id);
+        setCeramicId(id);
         setLoading(false);
       })
       .catch((err) => {
         console.log(err);
         sessionStorage.setItem("ceramicId", "");
+        setCeramicId("");
         setLoading(false);
       });
   };
@@ -51,13 +53,11 @@ function MainLayout() {
         onClick={connectToCeramic}
         disabled={ceramicId != ""}
       >
-        {
-          loading
+        {loading
           ? "Connecting..."
           : ceramicId == ""
           ? "Connect Wallet"
-          : "Connected"
-        }
+          : "Connected"}
       </Button>
     </div>
   );

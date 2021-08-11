@@ -1,7 +1,7 @@
 import React, { Suspense, lazy } from "react";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import { Switch, Route, BrowserRouter, Redirect } from "react-router-dom";
+import { Switch, Route, HashRouter, Redirect } from "react-router-dom";
 // layouts
 import MainLayout from "../layouts/MainLayout";
 import LogOnlyLayout from "../layouts/LogOnlyLayout";
@@ -20,7 +20,7 @@ export default function Router() {
   return (
     <>
       <MainLayout />
-      <BrowserRouter>
+      <HashRouter>
         <Switch>
           <Route exact path="/transfer/:id">
             <Transfer />
@@ -32,7 +32,7 @@ export default function Router() {
             <Redirect to="/" />
           </Route>
         </Switch>
-      </BrowserRouter>
+      </HashRouter>
     </>
   );
 }
