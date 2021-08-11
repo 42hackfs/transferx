@@ -18,7 +18,7 @@ import { styled, Theme } from "@material-ui/core/styles";
 import { useParams, useHistory } from "react-router-dom";
 
 import DownloadIcon from "@material-ui/icons/CloudDownload";
-import { retrieve } from "../web3storage";
+import { retrieve, checkStatus } from "../web3storage";
 import { Web3File } from "web3.storage";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
@@ -88,6 +88,7 @@ function Transfer(): React.ReactElement {
   useEffect(() => {
     async function retrieveFiles() {
       const files = await retrieve(params.id);
+      console.log(files);
 
       if (!files) {
         enqueueSnackbar("Invalid Link!", { variant: "error" });
