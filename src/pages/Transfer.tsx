@@ -69,11 +69,24 @@ function Transfer(): React.ReactElement {
   const [transfer, setTransfer] = useState<TransferResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [progress, setProgress] = useState(0);
+  const [size, setSize] = useState("");
   const params = useParams<{ id: string }>();
   const { enqueueSnackbar } = useSnackbar();
   const history = useHistory();
   const zip = new JSZip();
   const classes = useStyles();
+
+  const formatBytes = (bytes: number, decimals = 2) => {
+    if (bytes === 0) return "0 Bytes";
+
+    const k = 1024;
+    const dm = decimals < 0 ? 0 : decimals;
+    const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
+  };
 
   const handleClick = () => {
     setLoading(true);
@@ -83,7 +96,6 @@ function Transfer(): React.ReactElement {
     zip
       .generateAsync({ type: "blob", streamFiles: true }, (metadata: any) => {
         setProgress(metadata.percent);
-        console.log(metadata);
       })
       .then(function (content: any) {
         saveAs(content, `${transfer?.title}.zip`);
@@ -97,12 +109,11 @@ function Transfer(): React.ReactElement {
   useEffect(() => {
     async function retrieveFiles() {
       const response = await retrieve(params.id);
+      const status = await checkStatus(params.id);
 
-      // unpack File objects from the response
-      const files = await response.files();
-      // for (const file of files) {
-      //   console.log(`${file.cid} -- ${file.name} -- ${file.size}`);
-      // }
+      if (status.dagSize) {
+        setSize(formatBytes(status.dagSize));
+      }
 
       if (!response.ok) {
         enqueueSnackbar("Invalid Link!", { variant: "error" });
@@ -112,11 +123,20 @@ function Transfer(): React.ReactElement {
           title: "Sweden",
           message: "Here are some images",
           created: new Date().toISOString(),
-          files,
+          files: [],
         });
-        console.log();
       }
       setLoading(false);
+
+      response.files().then((files: Web3File[]) => {
+        setTransfer({
+          address: "",
+          title: "Sweden",
+          message: "Here are some images",
+          created: new Date().toISOString(),
+          files,
+        });
+      });
     }
 
     if (progress <= 0) {
@@ -151,16 +171,28 @@ function Transfer(): React.ReactElement {
               </Typography>
               <Typography variant="caption">{transfer.message}</Typography>
             </Box>
-            <List style={{ maxHeight: 280, overflowY: "auto" }}>
-              {transfer.files.map((file) => (
-                <ListItem key={file.name}>{file.name}</ListItem>
-              ))}
-            </List>
+            {transfer.files.length == 0 ? (
+              <div>
+                File metadata loading from IPFS...{" "}
+                <CircularProgress
+                  color="inherit"
+                  style={{ width: "16px", height: "16px", marginRight: "1rem" }}
+                />
+                {size != "" ? <i> Estimated file size ~ {size}</i> : null}
+              </div>
+            ) : (
+              <List style={{ maxHeight: 280, overflowY: "auto" }}>
+                {transfer.files.map((file) => (
+                  <ListItem key={file.name}>{file.name}</ListItem>
+                ))}
+              </List>
+            )}
             <Button
               variant="contained"
               color="primary"
               fullWidth
               onClick={handleClick}
+              disabled={transfer.files.length < 1}
             >
               Download zip file
             </Button>

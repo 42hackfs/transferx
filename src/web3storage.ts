@@ -53,10 +53,7 @@ async function retrieve(cid: string): Promise<any> {
 
 async function checkStatus(cid: string): Promise<any> {
   const status = await client.status(cid);
-  console.log(status);
-  if (status) {
-    // your code to do something fun with the status info here
-  }
+  return status;
 }
 
 export { storeWithProgress, retrieve, checkStatus };
