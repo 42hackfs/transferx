@@ -13,17 +13,20 @@ import LogOnlyLayout from "../layouts/LogOnlyLayout";
 import LoadingScreen from "../components/LoadingScreen";
 import Landing from "../pages/Landing";
 import Transfer from "../pages/Transfer";
-
+import HistoryPage from "../pages/HistoryPage";
 // ----------------------------------------------------------------------
 
 export default function Router() {
   return (
     <>
-      <MainLayout />
       <HashRouter>
+        <MainLayout />
         <Switch>
           <Route exact path="/transfer/:id">
             <Transfer />
+          </Route>
+          <Route exact path="/history">
+            <HistoryPage />
           </Route>
           <Route exact path="/">
             <Landing />

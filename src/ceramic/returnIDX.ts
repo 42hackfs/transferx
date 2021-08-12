@@ -1,26 +1,24 @@
 import { DID } from "dids";
-import type { CeramicApi } from '@ceramicnetwork/common'
 import ThreeIdResolver from "@ceramicnetwork/3id-did-resolver";
 import KeyDidResolver from "key-did-resolver";
 
 import { createCeramic } from "./ceramic";
 import { createIDX } from "./idx";
 import { getProvider } from "./wallet";
-import { createSchema } from './schema'
-import { createStream } from './stream'
-import { createCaip10Link } from './caip10link' 
+import { createSchema } from "./schema";
+import { createStream } from "./stream";
 import type { ResolverRegistry } from "did-resolver";
+import { IDX } from "@ceramicstudio/idx";
 
 declare global {
   interface Window {
     did?: DID;
-    accountLink: any;
   }
 }
 
 const ceramicPromise = createCeramic();
 
-const authenticate = async (): Promise<string> => {
+const returnIDX = async (): Promise<IDX> => {
   const [ceramic, provider] = await Promise.all([
     ceramicPromise,
     getProvider(),
@@ -37,24 +35,19 @@ const authenticate = async (): Promise<string> => {
   });
   await did.authenticate();
   await ceramic.setDID(did);
-
-  window.did = ceramic.did;
-
   const idx = createIDX(ceramic);
-
-  const accountLink = createCaip10Link(ceramic);
-
-  window.accountLink = accountLink;
-
-  
+  window.did = ceramic.did;
   // the createSchema will be done once in a script, our website will just need to store the ceramic id to create the stream.
-  // const config = await createSchema(ceramic);
+  const config = await createSchema(ceramic);
 
-  await idx.get("FilesList");
+  // every user will need a stream
+  // const stream = await createStream(ceramic, config);
 
-  console.log("config is : \n", config);
-
-  return idx.id;
+  console.log("idx is : \n", idx);
+  const fileList = await idx.get("FilesList");
+  console.log("filelist:", fileList);
+  // console.log('stream final : ', stream);
+  return idx;
 };
 
-export { authenticate };
+export { returnIDX };
