@@ -1,18 +1,20 @@
 import type { CeramicApi } from '@ceramicnetwork/common'
 import { TileDocument } from '@ceramicnetwork/stream-tile'
 
-export async function createStream (ceramic: CeramicApi, config: any): Promise<any> {
+export async function createStream (
+  ceramic: CeramicApi,
+  content: any,
+  schema: string,
+): Promise<any> {
   try {
+    console.log(ceramic, schema, content);
     const doc = await TileDocument.create(
       ceramic,
-      {
-        text: 'test',
-        file: 'ALkdjlfjkl3930',
-      },
-      { schema: config.schemas.Transferx }
-    )
+      content,
+      { schema }
+    );
 
-    const streamId = doc.id.toString()
+    const streamId = doc.id.toString();
 
     console.log('StreamId is : ', streamId)
 
