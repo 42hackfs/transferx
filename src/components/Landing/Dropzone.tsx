@@ -15,7 +15,6 @@ import {
   Backdrop,
   CircularProgress,
 } from "@material-ui/core";
-
 import { styled, Theme } from "@material-ui/core/styles";
 
 import AddIcon from "@material-ui/icons/AddCircleOutline";
@@ -24,14 +23,16 @@ import { storeWithProgress } from "../../web3storage";
 import { makeStyles } from "@material-ui/styles";
 import { useSnackbar } from "notistack";
 
+import type { CeramicApi } from '@ceramicnetwork/common'
+import { createStream } from '../../ceramic/stream'
+
 const DivStyle = styled("div")(({ theme }: { theme: Theme }) => ({
   display: "flex",
   alignItems: "center",
   padding: "20px 30px",
   border: "1px solid white",
   borderRadius: 5,
-  gap: 20,
-  "&:hover": {
+  gap: 20, "&:hover": {
     border: "1px solid black",
     cursor: "pointer",
   },
@@ -46,6 +47,12 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
+declare const process : {
+  env: {
+    CERAMIC_SCHEMA_TRANSFERX: string
+  }
+}
+
 function Dropzone({ setId }: { setId: any }): React.ReactElement {
   const classes = useStyles();
   const [files, setFiles] = useState<File[]>([]);
@@ -56,8 +63,7 @@ function Dropzone({ setId }: { setId: any }): React.ReactElement {
 
   const { enqueueSnackbar } = useSnackbar();
 
-  const onDrop = useCallback((acceptedFiles) => {
-    // Do something with the files
+  const onDrop = useCallback((acceptedFiles) => { // Do something with the files
     console.log(acceptedFiles[0].name);
 
     setFiles((prev) => [...prev, ...acceptedFiles]);
@@ -74,6 +80,20 @@ function Dropzone({ setId }: { setId: any }): React.ReactElement {
     setLoading(true);
     try {
       const id = await storeWithProgress(files, setProgress);
+      const ceramic: CeramicApi = window.ceramic;
+      console.log('mmh ceramic', ceramic);
+      const stream = await createStream(
+        ceramic,
+        {
+          CID: id,
+          title,
+          message,
+          signature: "",
+          uploaderAddress: "",
+        },
+        process.env.CERAMIC_SCHEMA_TRANSFERX,
+      );
+
       setId(id);
     } catch (error) {
       console.log(error);
