@@ -3,7 +3,7 @@ import { IDX } from "@ceramicstudio/idx";
 
 declare global {
   interface Window {
-    idx?: IDX;
+    idx: IDX;
   }
 }
 

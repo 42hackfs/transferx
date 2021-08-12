@@ -8,11 +8,13 @@ import { createIDX } from "./idx";
 import { getProvider } from "./wallet";
 import { createSchema } from './schema'
 import { createStream } from './stream'
+import { createCaip10Link } from './caip10link' 
 import type { ResolverRegistry } from "did-resolver";
 
 declare global {
   interface Window {
     did?: DID;
+    accountLink: any;
   }
 }
 
@@ -36,20 +38,19 @@ const authenticate = async (): Promise<string> => {
   await did.authenticate();
   await ceramic.setDID(did);
 
-  await window.accountLink.setDid(ceramic.did, window.ethAuthProvider);
+  window.did = ceramic.did;
 
   const idx = createIDX(ceramic);
 
-  window.did = ceramic.did;
+  const accountLink = createCaip10Link(ceramic);
 
+  window.accountLink = accountLink;
+
+  
   // the createSchema will be done once in a script, our website will just need to store the ceramic id to create the stream.
   // const config = await createSchema(ceramic);
 
-  // every user will need a stream
-  // const stream = await createStream(ceramic, config);
-
   // console.log('config is : \n', config);
-  // console.log('stream final : ', stream);
 
   return idx.id;
 };
