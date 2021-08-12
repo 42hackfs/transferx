@@ -8,6 +8,7 @@ import { getProvider } from "./wallet";
 import { createSchema } from "./schema";
 import { createStream } from "./stream";
 import type { ResolverRegistry } from "did-resolver";
+import { IDX } from "@ceramicstudio/idx";
 
 declare global {
   interface Window {
@@ -17,7 +18,7 @@ declare global {
 
 const ceramicPromise = createCeramic();
 
-const authenticate = async (): Promise<string> => {
+const returnIDX = async (): Promise<IDX> => {
   const [ceramic, provider] = await Promise.all([
     ceramicPromise,
     getProvider(),
@@ -36,17 +37,17 @@ const authenticate = async (): Promise<string> => {
   await ceramic.setDID(did);
   const idx = createIDX(ceramic);
   window.did = ceramic.did;
-  await idx.get("FilesList");
   // the createSchema will be done once in a script, our website will just need to store the ceramic id to create the stream.
   const config = await createSchema(ceramic);
 
   // every user will need a stream
   // const stream = await createStream(ceramic, config);
 
-  console.log("config is : \n", config);
+  console.log("idx is : \n", idx);
+  const fileList = await idx.get("FilesList");
+  console.log("filelist:", fileList);
   // console.log('stream final : ', stream);
-
-  return idx.id;
+  return idx;
 };
 
-export { authenticate };
+export { returnIDX };
