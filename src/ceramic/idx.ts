@@ -7,8 +7,20 @@ declare global {
   }
 }
 
-export function createIDX(ceramic: CeramicApi): IDX {
+function createIDX(ceramic: CeramicApi): IDX {
   const idx = new IDX({ ceramic });
   window.idx = idx;
   return idx;
 }
+
+async function getCryptoAccount(): Promise<any> {
+  if (!window.idx) {
+    window.idx = new IDX({ ceramic: window.ceramic })
+  }
+
+  const ret = await window.idx.get('cryptoAccounts', window.ceramicId)
+
+  return ret
+}
+
+export { createIDX, getCryptoAccount };

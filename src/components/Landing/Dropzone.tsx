@@ -25,6 +25,7 @@ import { useSnackbar } from "notistack";
 
 import type { CeramicApi } from '@ceramicnetwork/common'
 import { createStream } from '../../ceramic/stream'
+import { getCryptoAccount } from "../../ceramic/idx"
 
 const DivStyle = styled("div")(({ theme }: { theme: Theme }) => ({
   display: "flex",
@@ -40,8 +41,6 @@ const DivStyle = styled("div")(({ theme }: { theme: Theme }) => ({
 
 const useStyles = makeStyles((theme: Theme) => ({
   backdrop: {
-    display: "flex",
-    flexDirection: "column",
     zIndex: theme.zIndex.drawer + 1,
     color: "#fff",
   },
@@ -79,19 +78,25 @@ function Dropzone({ setId }: { setId: any }): React.ReactElement {
     console.log("Submit:", { files, title, message });
     setLoading(true);
     try {
+
+
       const id = await storeWithProgress(files, setProgress);
-      const ceramic: CeramicApi = window.ceramic;
-      console.log('mmh ceramic', ceramic);
+      /* const ceramic: CeramicApi = window.ceramic; */
+      /* console.log('mmh ceramic', ceramic); */
+      const caip10link = await getCryptoAccount()
+
+      const ethAddress = Object.keys(caip10link)[0];
       const stream = await createStream(
-        ceramic,
+        window.ceramic,
         {
           CID: id,
           title,
           message,
-          signature: "",
-          uploaderAddress: "",
+          caip10Link: caip10link[ethAddress],
+          uploaderAddress: ethAddress,
         },
         process.env.CERAMIC_SCHEMA_TRANSFERX,
+        [window.idx.id],
       );
 
       setId(id);
@@ -194,7 +199,6 @@ function Dropzone({ setId }: { setId: any }): React.ReactElement {
       </Card>
       <Backdrop className={classes.backdrop} open={loading}>
         <CircularProgress color="inherit" />
-        <h1 style={{ color: "white", marginTop: "1rem" }}>{progress}</h1>
       </Backdrop>
     </div>
   );

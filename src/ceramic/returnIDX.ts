@@ -19,6 +19,8 @@ declare global {
 const ceramicPromise = createCeramic();
 
 const returnIDX = async (): Promise<IDX> => {
+
+  console.log('returnIDX')
   const [ceramic, provider] = await Promise.all([
     ceramicPromise,
     getProvider(),

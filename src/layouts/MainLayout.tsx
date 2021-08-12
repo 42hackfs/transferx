@@ -6,7 +6,6 @@ import { useHistory } from "react-router-dom";
 
 function MainLayout() {
   const sessionStorage = window.sessionStorage;
-  console.log("sessionStorage", sessionStorage);
   const [loading, setLoading] = useState(false);
   const [ceramicId, setCeramicId] = useState("");
   const history = useHistory();

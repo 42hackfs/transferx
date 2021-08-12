@@ -5,13 +5,17 @@ export async function createStream (
   ceramic: CeramicApi,
   content: any,
   schema: string,
+  controllers: string[],
 ): Promise<any> {
   try {
-    console.log(ceramic, schema, content);
+    console.log(schema, content, controllers);
     const doc = await TileDocument.create(
       ceramic,
       content,
-      { schema }
+      {
+        controllers,
+        schema,
+      }
     );
 
     const streamId = doc.id.toString();
