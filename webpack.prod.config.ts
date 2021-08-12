@@ -46,6 +46,7 @@ const config: webpack.Configuration = {
   plugins: [
     new HtmlWebpackPlugin({
       template: "public/index.html",
+      favicon: "./public/favicon/favicon-32x32.png",
     }),
     new ForkTsCheckerWebpackPlugin({
       async: false,
@@ -64,7 +65,7 @@ const config: webpack.Configuration = {
       "process.env.CONNECT_MANAGE_URL": JSON.stringify(
         "https://app-clay.3idconnect.org/management/index.html"
       ),
-      "process.env.NODE_ENV": JSON.stringify("development"),
+      "process.env.NODE_ENV": JSON.stringify("production"),
       "process.env.REACT_APP_MYAPP": JSON.stringify(
         process.env.REACT_APP_MYAPP
       ),

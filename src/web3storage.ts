@@ -14,7 +14,7 @@ function makeStorageClient(): Web3Storage {
   return new Web3Storage({ token: getAccessToken() });
 }
 
-async function storeWithProgress(files: File[]): Promise<CidString> {
+async function storeWithProgress(files: File[], callbackFn: (pct: string) => void): Promise<CidString> {
   // show the root cid as soon as it's ready
   const onRootCidReady = (cid: string) => {
     console.log("uploading files with cid:", cid);
@@ -26,8 +26,8 @@ async function storeWithProgress(files: File[]): Promise<CidString> {
 
   const onStoredChunk = (size: number) => {
     uploaded += size;
-    const pct = totalSize / uploaded;
-    console.log(`Uploading... ${pct.toFixed(2)}% complete`);
+    const pct = (uploaded / totalSize ) * 100;
+    callbackFn(`Uploading... ${pct.toFixed(2)}% complete`)
   };
 
   // client.put will invoke our callbacks during the upload
@@ -43,12 +43,7 @@ async function retrieve(cid: string): Promise<any> {
       throw new Error(`failed to get ${cid}`);
     }
 
-    // unpack File objects from the response
-    const files = await res.files();
-    for (const file of files) {
-      console.log(`${file.cid} -- ${file.name} -- ${file.size}`);
-    }
-    return files;
+    return res;
   } else {
     // Something went wrong!
     console.log("No response");
@@ -57,12 +52,8 @@ async function retrieve(cid: string): Promise<any> {
 }
 
 async function checkStatus(cid: string): Promise<any> {
-  const client = makeStorageClient();
   const status = await client.status(cid);
-  console.log(status);
-  if (status) {
-    // your code to do something fun with the status info here
-  }
+  return status;
 }
 
 export { storeWithProgress, retrieve, checkStatus };

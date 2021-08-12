@@ -40,6 +40,8 @@ const DivStyle = styled("div")(({ theme }: { theme: Theme }) => ({
 
 const useStyles = makeStyles((theme: Theme) => ({
   backdrop: {
+    display: "flex",
+    flexDirection: "column",
     zIndex: theme.zIndex.drawer + 1,
     color: "#fff",
   },
@@ -57,6 +59,7 @@ function Dropzone({ setId }: { setId: any }): React.ReactElement {
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [progress, setProgress] = useState("Uploading... 0.00% complete");
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -76,7 +79,7 @@ function Dropzone({ setId }: { setId: any }): React.ReactElement {
     console.log("Submit:", { files, title, message });
     setLoading(true);
     try {
-      const id = await storeWithProgress(files);
+      const id = await storeWithProgress(files, setProgress);
       const ceramic: CeramicApi = window.ceramic;
       console.log('mmh ceramic', ceramic);
       const stream = await createStream(
@@ -191,6 +194,7 @@ function Dropzone({ setId }: { setId: any }): React.ReactElement {
       </Card>
       <Backdrop className={classes.backdrop} open={loading}>
         <CircularProgress color="inherit" />
+        <h1 style={{ color: "white", marginTop: "1rem" }}>{progress}</h1>
       </Backdrop>
     </div>
   );
