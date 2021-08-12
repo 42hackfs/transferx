@@ -9,6 +9,7 @@ declare global {
 
 function createIDX(ceramic: CeramicApi): IDX {
   const idx = new IDX({ ceramic });
+  // STATE (3) => this should go in a global state instead of window
   window.idx = idx;
   return idx;
 }

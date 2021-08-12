@@ -14,6 +14,7 @@ const API_URL = "https://ceramic-clay.3boxlabs.com";
 
 export async function createCeramic(): Promise<CeramicApi> {
   const ceramic = new Ceramic(API_URL);
+  // STATE (3) => this should go in a global state instead of window
   window.ceramic = ceramic;
   window.TileDocument = TileDocument;
   return Promise.resolve(ceramic as CeramicApi);

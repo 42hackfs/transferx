@@ -17,6 +17,7 @@ function MainLayout() {
   const connectToCeramic = () => {
     setLoading(true);
 
+    // STATE (1) => first call 
     authenticate()
       .then((id) => {
         console.log("Connected to Ceramic:", id);

@@ -17,6 +17,7 @@ declare global {
   }
 }
 
+// STATE (2) => this is where the ceramic instance is created
 const ceramicPromise = createCeramic();
 
 const authenticate = async (): Promise<string> => {
@@ -37,6 +38,7 @@ const authenticate = async (): Promise<string> => {
   await did.authenticate();
   await ceramic.setDID(did);
 
+// STATE (2) => this is where the idx instance is created
   const idx = createIDX(ceramic);
 
   const accountLink = createCaip10Link(ceramic);
