@@ -23,7 +23,7 @@ import { Web3File } from "web3.storage";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
 import { makeStyles } from "@material-ui/styles";
-import crypto from "crypto-js";
+import CryptoJS from "crypto-js";
 
 interface TransferResponse {
   address: string;
@@ -109,14 +109,13 @@ function Transfer(): React.ReactElement {
 
   useEffect(() => {
     async function retrieveFiles() {
-      const encrypted = decodeURI(params.id);
-      const bytes = crypto.AES.decrypt(encrypted, process.env.SECRET_KEY!);
+      const encrypted = decodeURI(params.id.replaceAll("*", "/"));
+      const bytes = CryptoJS.AES.decrypt(encrypted, process.env.SECRET_KEY!);
       const jsonString = bytes.toString(CryptoJS.enc.Utf8);
       const data = JSON.parse(jsonString);
 
-      console.log(data);
-      // const stream = await window.ceramic.loadStream(streamId);
-      // console.log("STRAEM", stream);
+      const stream = await window.ceramic.loadStream(data.stream);
+      const content = (stream as any).content;
       const response = await retrieve(data.files);
       const status = await checkStatus(data.files);
 
@@ -129,8 +128,8 @@ function Transfer(): React.ReactElement {
       } else {
         setTransfer({
           address: "",
-          title: "Sweden",
-          message: "Here are some images",
+          title: content.title,
+          message: content.message,
           created: new Date().toISOString(),
           files: [],
         });
@@ -140,8 +139,8 @@ function Transfer(): React.ReactElement {
       response.files().then((files: Web3File[]) => {
         setTransfer({
           address: "",
-          title: "Sweden",
-          message: "Here are some images",
+          title: content.title,
+          message: content.message,
           created: new Date().toISOString(),
           files,
         });

@@ -28,7 +28,7 @@ import type { CeramicApi } from "@ceramicnetwork/common";
 import { createStream } from "../../ceramic/stream";
 import { getCryptoAccount } from "../../ceramic/idx";
 import { useEffect } from "react";
-import crypto from "crypto-js";
+import CryptoJS from "crypto-js";
 
 import { schemas } from "../../ceramic/config.json";
 
@@ -97,7 +97,7 @@ function Dropzone({ setId }: { setId: any }): React.ReactElement {
           caip10Link: caip10link[ethAddress],
           uploaderAddress: ethAddress,
         },
-        schemas.FileSchema,
+        (schemas as any).FileSchema,
         [window.idx!.id],
         window.idx
       );
@@ -108,8 +108,11 @@ function Dropzone({ setId }: { setId: any }): React.ReactElement {
         files: id,
       });
 
-      const link = crypto.AES.encrypt(data, process.env.SECRET_KEY!).toString();
-      const encoded = encodeURI(link);
+      const link = CryptoJS.AES.encrypt(
+        data,
+        process.env.SECRET_KEY!
+      ).toString();
+      const encoded = encodeURI(link.replaceAll("/", "*"));
 
       setLoading(false);
       setId(encoded);
