@@ -29,6 +29,8 @@ import { createStream } from "../../ceramic/stream";
 import { getCryptoAccount } from "../../ceramic/idx";
 import { useEffect } from "react";
 
+import { schemas } from '../../ceramic/config.json'
+
 const DivStyle = styled("div")(({ theme }: { theme: Theme }) => ({
   display: "flex",
   alignItems: "center",
@@ -50,12 +52,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: "#fff",
   },
 }));
-
-declare const process: {
-  env: {
-    CERAMIC_SCHEMA_TRANSFERX: string;
-  };
-};
 
 function Dropzone({ setId }: { setId: any }): React.ReactElement {
   const classes = useStyles();
@@ -100,8 +96,9 @@ function Dropzone({ setId }: { setId: any }): React.ReactElement {
           caip10Link: caip10link[ethAddress],
           uploaderAddress: ethAddress,
         },
-        process.env.CERAMIC_SCHEMA_TRANSFERX,
-        [window.idx!.id]
+        schemas.Transferx,
+        [window.idx!.id],
+        window.idx
       );
 
       setId(id);

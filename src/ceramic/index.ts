@@ -6,7 +6,6 @@ import KeyDidResolver from "key-did-resolver";
 import { createCeramic } from "./ceramic";
 import { createIDX } from "./idx";
 import { getProvider } from "./wallet";
-import { createSchema } from "./schema";
 import { createStream } from "./stream";
 import { createCaip10Link } from "./caip10link";
 import type { ResolverRegistry } from "did-resolver";
@@ -46,13 +45,6 @@ const authenticate = async (): Promise<IDX> => {
 
   window.did = ceramic.did;
   window.ceramic = ceramic;
-
-  // the createSchema will be done once in a script, our website will just need to store the ceramic id to create the stream.
-  // const config = await createSchema(ceramic);
-
-  // await idx.get("FilesList");
-
-  // console.log("config is : \n", config);
 
   return idx;
 };
