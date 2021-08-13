@@ -14,7 +14,11 @@ function makeStorageClient(): Web3Storage {
   return new Web3Storage({ token: getAccessToken() });
 }
 
-async function storeWithProgress(files: File[], callbackFn: (pct: string) => void, name?: string): Promise<CidString> {
+async function storeWithProgress(
+  files: File[],
+  callbackFn: (pct: string) => void,
+  name?: string
+): Promise<CidString> {
   // show the root cid as soon as it's ready
   const onRootCidReady = (cid: string) => {
     console.log("uploading files with cid:", cid);
@@ -26,15 +30,18 @@ async function storeWithProgress(files: File[], callbackFn: (pct: string) => voi
 
   const onStoredChunk = (size: number) => {
     uploaded += size;
-    const pct = (uploaded / totalSize ) * 100;
-    callbackFn(`Uploading... ${pct.toFixed(2)}% complete`)
+    let pct = (uploaded / totalSize) * 100;
+
+    if (pct > 100) {
+      pct = 100;
+    }
+    callbackFn(`Uploading... ${pct.toFixed(2)}% complete`);
   };
 
   // client.put will invoke our callbacks during the upload
   // and return the root cid when the upload completes
   return client.put(files, { onRootCidReady, onStoredChunk, name });
 }
-
 
 async function retrieve(cid: string): Promise<any> {
   const res = await client.get(cid);

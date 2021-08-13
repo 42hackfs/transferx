@@ -23,6 +23,7 @@ import { Web3File } from "web3.storage";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
 import { makeStyles } from "@material-ui/styles";
+import crypto from "crypto-js";
 
 interface TransferResponse {
   address: string;
@@ -108,8 +109,16 @@ function Transfer(): React.ReactElement {
 
   useEffect(() => {
     async function retrieveFiles() {
-      const response = await retrieve(params.id);
-      const status = await checkStatus(params.id);
+      const encrypted = decodeURI(params.id);
+      const bytes = crypto.AES.decrypt(encrypted, process.env.SECRET_KEY!);
+      const jsonString = bytes.toString(CryptoJS.enc.Utf8);
+      const data = JSON.parse(jsonString);
+
+      console.log(data);
+      // const stream = await window.ceramic.loadStream(streamId);
+      // console.log("STRAEM", stream);
+      const response = await retrieve(data.files);
+      const status = await checkStatus(data.files);
 
       if (status.dagSize) {
         setSize(formatBytes(status.dagSize));

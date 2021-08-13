@@ -28,8 +28,9 @@ import type { CeramicApi } from "@ceramicnetwork/common";
 import { createStream } from "../../ceramic/stream";
 import { getCryptoAccount } from "../../ceramic/idx";
 import { useEffect } from "react";
+import crypto from "crypto-js";
 
-import { schemas } from '../../ceramic/config.json'
+import { schemas } from "../../ceramic/config.json";
 
 const DivStyle = styled("div")(({ theme }: { theme: Theme }) => ({
   display: "flex",
@@ -87,7 +88,7 @@ function Dropzone({ setId }: { setId: any }): React.ReactElement {
 
       const ethAddress = Object.keys(caip10link)[0];
 
-      const stream = await createStream(
+      const streamId = await createStream(
         window.ceramic,
         {
           CID: id,
@@ -101,7 +102,17 @@ function Dropzone({ setId }: { setId: any }): React.ReactElement {
         window.idx
       );
 
-      setId(id);
+      // Right here we want to encrypt the streamId + web3storage link
+      const data = JSON.stringify({
+        stream: streamId,
+        files: id,
+      });
+
+      const link = crypto.AES.encrypt(data, process.env.SECRET_KEY!).toString();
+      const encoded = encodeURI(link);
+
+      setLoading(false);
+      setId(encoded);
     } catch (error) {
       console.log(error);
       enqueueSnackbar("No files uploaded!", { variant: "error" });
