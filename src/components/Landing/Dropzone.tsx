@@ -26,6 +26,7 @@ import { useSnackbar } from "notistack";
 import type { CeramicApi } from "@ceramicnetwork/common";
 import { createStream } from "../../ceramic/stream";
 import { getCryptoAccount } from "../../ceramic/idx";
+import { useEffect } from "react";
 
 const DivStyle = styled("div")(({ theme }: { theme: Theme }) => ({
   display: "flex",
@@ -82,7 +83,7 @@ function Dropzone({ setId }: { setId: any }): React.ReactElement {
     console.log("Submit:", { files, title, message });
     setLoading(true);
     try {
-      const id = await storeWithProgress(files, setProgress);
+      const id = await storeWithProgress(files, setProgress, title);
       /* const ceramic: CeramicApi = window.ceramic; */
       /* console.log('mmh ceramic', ceramic); */
       const caip10link = await getCryptoAccount();
@@ -109,6 +110,10 @@ function Dropzone({ setId }: { setId: any }): React.ReactElement {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    listUploads();
+  }, []);
 
   return (
     <div className="container">
