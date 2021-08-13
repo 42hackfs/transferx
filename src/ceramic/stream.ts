@@ -21,7 +21,7 @@ export async function createStream (
       }
     );
 
-    // const listOfFiles = idx.get<FilesList>('filesList');
+    // const listOfFiles = idx.get<FilesList>('filesListDef');
 
     const streamId = doc.id.toString();
 
