@@ -21,16 +21,19 @@ export async function createStream (
       }
     );
 
-    // const listOfFiles = idx.get<FilesList>('filesListDef');
 
     const streamId = doc.id.toString();
 
     console.log('StreamId is : ', streamId)
 
+    const listOfFiles = await idx.get<FilesList>('fileListDef');
+    console.log('array file ', listOfFiles)
+    const list = listOfFiles ? listOfFiles.files : []
 
-    // const rest = await idx.set('fileList', {
-    //   files: [content, ...listOfFiles],
-    // });
+    const rest = await idx.set('fileListDef', {
+      files: [content, ...list],
+    });
+
 
     return streamId
   } catch (error) {

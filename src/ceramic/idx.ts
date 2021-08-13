@@ -20,7 +20,7 @@ export type FileItem = {
 export type FilesList = { files: Array<FileItem> }
 
 function createIDX(ceramic: CeramicApi): IDX {
-  const idx = new IDX({ ceramic });
+  const idx = new IDX({ ceramic, aliases: definitions });
   // STATE (3) => this should go in a global state instead of window
   window.idx = idx;
   return idx;
@@ -28,7 +28,7 @@ function createIDX(ceramic: CeramicApi): IDX {
 
 async function getCryptoAccount(): Promise<any> {
   if (!window.idx) {
-    window.idx = new IDX({ ceramic: window.ceramic, aliases: definitions })
+    window.idx = new IDX({ ceramic: window.ceramic})
   }
 
   const ret = await window.idx.get('cryptoAccounts', window.ceramicId)
