@@ -10,6 +10,7 @@ import { createSchema } from "./schema";
 import { createStream } from "./stream";
 import { createCaip10Link } from "./caip10link";
 import type { ResolverRegistry } from "did-resolver";
+import { IDX } from "@ceramicstudio/idx";
 
 declare global {
   interface Window {
@@ -20,7 +21,7 @@ declare global {
 // STATE (2) => this is where the ceramic instance is created
 const ceramicPromise = createCeramic();
 
-const authenticate = async (): Promise<string> => {
+const authenticate = async (): Promise<IDX> => {
   const [ceramic, provider] = await Promise.all([
     ceramicPromise,
     getProvider(),
@@ -46,13 +47,13 @@ const authenticate = async (): Promise<string> => {
   window.did = ceramic.did;
 
   // the createSchema will be done once in a script, our website will just need to store the ceramic id to create the stream.
-  // const config = await createSchema(ceramic);
+  const config = await createSchema(ceramic);
 
-  // await idx.get("FilesList");
+  await idx.get("FilesList");
 
-  // console.log("config is : \n", config);
+  console.log("config is : \n", config);
 
-  return idx.id;
+  return idx;
 };
 
 export { authenticate };

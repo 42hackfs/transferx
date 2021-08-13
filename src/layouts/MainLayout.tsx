@@ -5,7 +5,6 @@ import Logo from "../components/Logo";
 import { useHistory } from "react-router-dom";
 
 function MainLayout() {
-  const sessionStorage = window.sessionStorage;
   const [loading, setLoading] = useState(false);
   const [ceramicId, setCeramicId] = useState("");
   const history = useHistory();
@@ -19,12 +18,18 @@ function MainLayout() {
 
     // STATE (1) => first call
     authenticate()
-      .then((id) => {
-        console.log("Connected to Ceramic:", id);
-        setCeramicId(id);
+      .then(async (idx) => {
+        console.log("Connected to Ceramic:", idx.id);
+        setCeramicId(idx.id);
         setLoading(false);
-        // await idx.get("basicProfile", "<DID-or-caip10-id>");
-        // await IDX.get("FilesList", id);
+
+        // Unsure if this is supposed to be the way for the basicProfile
+        const accounts = await window.ethereum.request({
+          method: "eth_requestAccounts",
+        });
+        console.log(accounts[0]);
+        console.log(await idx.get("basicProfile", `${accounts[0]}@eip155:1`));
+        console.log(await idx.get("FilesList", idx.id));
       })
       .catch((err) => {
         console.log(err);

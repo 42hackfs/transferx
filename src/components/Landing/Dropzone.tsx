@@ -42,6 +42,8 @@ const DivStyle = styled("div")(({ theme }: { theme: Theme }) => ({
 
 const useStyles = makeStyles((theme: Theme) => ({
   backdrop: {
+    display: "flex",
+    flexDirection: "column",
     zIndex: theme.zIndex.drawer + 1,
     color: "#fff",
   },
@@ -199,6 +201,7 @@ function Dropzone({ setId }: { setId: any }): React.ReactElement {
       </Card>
       <Backdrop className={classes.backdrop} open={loading}>
         <CircularProgress color="inherit" />
+        <h1 style={{ color: "white", marginTop: "1rem" }}>{progress}</h1>
       </Backdrop>
     </div>
   );
