@@ -23,9 +23,6 @@ function MainLayout() {
         console.log("Connected to Ceramic:", idx.id);
         setCeramicId(idx.id);
         setLoading(false);
-
-        console.log(await idx.get("basicProfile", idx.id));
-        console.log(await idx.get("FilesList", idx.id));
       })
       .catch((err) => {
         console.log(err);

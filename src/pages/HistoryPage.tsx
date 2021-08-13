@@ -23,7 +23,6 @@ import { Web3File } from "web3.storage";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
 import { makeStyles } from "@material-ui/styles";
-import { returnIDX } from "../ceramic/returnIDX";
 interface TransferResponse {
   address: string;
   title: string;
@@ -98,21 +97,13 @@ function HistoryPage(): React.ReactElement {
 
   useEffect(() => {
     async function retrieveIDX() {
-      const idx = await returnIDX();
-      console.log("idx is : \n", idx);
-      const fileList = await idx.get(
-        "k3y52l7qbv1frxuytekir1687ahzojcwbrrvud6etaqwtrsroexhymya8yrsikruo"
-      );
-      const cryptoAccounts = await idx.get("cryptoAccounts", idx.id);
-      const Transferx = await idx.get("Transferx", idx.id);
-      const basicProfile = await idx.get("basicProfile");
+      const idx = window.idx;
+      const fileList = await idx.get("FilesList");
+      const cryptoAccounts = await idx.get("cryptoAccounts");
+      const Transferx = await idx.get("Transferx");
       console.log("crypto", cryptoAccounts);
       console.log("Transferx:", Transferx);
       console.log("filelist:", fileList);
-      console.log("idx profile", basicProfile);
-      console.log("AUTH", await idx.authenticated);
-      console.log("ID", idx.id);
-      //  console.log("AUTH", await idx.);
       // setUploadList(objectList);
       setUploadList(null);
       // console.log("uploadlist", uploadList);
