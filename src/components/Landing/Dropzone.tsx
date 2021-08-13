@@ -111,10 +111,6 @@ function Dropzone({ setId }: { setId: any }): React.ReactElement {
     }
   };
 
-  useEffect(() => {
-    listUploads();
-  }, []);
-
   return (
     <div className="container">
       <Card>
