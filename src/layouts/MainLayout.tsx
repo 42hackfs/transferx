@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { authenticate } from "../ceramic";
 import Logo from "../components/Logo";
 import { useHistory } from "react-router-dom";
+import { getCryptoAccount } from "../ceramic/idx";
 
 function MainLayout() {
   const [loading, setLoading] = useState(false);
@@ -23,12 +24,7 @@ function MainLayout() {
         setCeramicId(idx.id);
         setLoading(false);
 
-        // Unsure if this is supposed to be the way for the basicProfile
-        const accounts = await window.ethereum.request({
-          method: "eth_requestAccounts",
-        });
-        console.log(accounts[0]);
-        console.log(await idx.get("basicProfile", `${accounts[0]}@eip155:1`));
+        console.log(await idx.get("basicProfile", idx.id));
         console.log(await idx.get("FilesList", idx.id));
       })
       .catch((err) => {

@@ -45,13 +45,14 @@ const authenticate = async (): Promise<IDX> => {
   const accountLink = createCaip10Link(ceramic);
 
   window.did = ceramic.did;
+  window.ceramic = ceramic;
 
   // the createSchema will be done once in a script, our website will just need to store the ceramic id to create the stream.
-  const config = await createSchema(ceramic);
+  // const config = await createSchema(ceramic);
 
-  await idx.get("FilesList");
+  // await idx.get("FilesList");
 
-  console.log("config is : \n", config);
+  // console.log("config is : \n", config);
 
   return idx;
 };

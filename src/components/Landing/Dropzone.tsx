@@ -89,12 +89,8 @@ function Dropzone({ setId }: { setId: any }): React.ReactElement {
       /* console.log('mmh ceramic', ceramic); */
       const caip10link = await getCryptoAccount();
 
-      console.log("Hey", window.ceramic);
-      console.log("Hey", window.idx);
-
-      console.log("lol", process.env.CERAMIC_SCHEMA_TRANSFERX);
-
       const ethAddress = Object.keys(caip10link)[0];
+
       const stream = await createStream(
         window.ceramic,
         {
