@@ -96,7 +96,7 @@ function Dropzone({ setId }: { setId: any }): React.ReactElement {
           caip10Link: caip10link[ethAddress],
           uploaderAddress: ethAddress,
         },
-        schemas.Transferx,
+        schemas.FileSchema,
         [window.idx!.id],
         window.idx
       );
