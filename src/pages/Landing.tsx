@@ -63,13 +63,11 @@ function Landing(): React.ReactElement {
   return (
     <Container maxWidth="sm">
       <ContentStyle>
-        {
-          !id ? (
-            <Dropzone setId={setId} />
-          ) : (
-            <DisplayLink id={id || ""} />
-          )
-        }
+        {!id ? (
+          <Dropzone setId={setId} />
+        ) : (
+          <DisplayLink id={id || ""} setId={setId} />
+        )}
       </ContentStyle>
     </Container>
   );

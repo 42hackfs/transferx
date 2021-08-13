@@ -23,9 +23,9 @@ import { storeWithProgress } from "../../web3storage";
 import { makeStyles } from "@material-ui/styles";
 import { useSnackbar } from "notistack";
 
-import type { CeramicApi } from '@ceramicnetwork/common'
-import { createStream } from '../../ceramic/stream'
-import { getCryptoAccount } from "../../ceramic/idx"
+import type { CeramicApi } from "@ceramicnetwork/common";
+import { createStream } from "../../ceramic/stream";
+import { getCryptoAccount } from "../../ceramic/idx";
 
 const DivStyle = styled("div")(({ theme }: { theme: Theme }) => ({
   display: "flex",
@@ -33,7 +33,8 @@ const DivStyle = styled("div")(({ theme }: { theme: Theme }) => ({
   padding: "20px 30px",
   border: "1px solid white",
   borderRadius: 5,
-  gap: 20, "&:hover": {
+  gap: 20,
+  "&:hover": {
     border: "1px solid black",
     cursor: "pointer",
   },
@@ -46,11 +47,11 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-declare const process : {
+declare const process: {
   env: {
-    CERAMIC_SCHEMA_TRANSFERX: string
-  }
-}
+    CERAMIC_SCHEMA_TRANSFERX: string;
+  };
+};
 
 function Dropzone({ setId }: { setId: any }): React.ReactElement {
   const classes = useStyles();
@@ -62,7 +63,8 @@ function Dropzone({ setId }: { setId: any }): React.ReactElement {
 
   const { enqueueSnackbar } = useSnackbar();
 
-  const onDrop = useCallback((acceptedFiles) => { // Do something with the files
+  const onDrop = useCallback((acceptedFiles) => {
+    // Do something with the files
     console.log(acceptedFiles[0].name);
 
     setFiles((prev) => [...prev, ...acceptedFiles]);
@@ -78,12 +80,10 @@ function Dropzone({ setId }: { setId: any }): React.ReactElement {
     console.log("Submit:", { files, title, message });
     setLoading(true);
     try {
-
-
       const id = await storeWithProgress(files, setProgress);
       /* const ceramic: CeramicApi = window.ceramic; */
       /* console.log('mmh ceramic', ceramic); */
-      const caip10link = await getCryptoAccount()
+      const caip10link = await getCryptoAccount();
 
       const ethAddress = Object.keys(caip10link)[0];
       const stream = await createStream(
@@ -96,7 +96,7 @@ function Dropzone({ setId }: { setId: any }): React.ReactElement {
           uploaderAddress: ethAddress,
         },
         process.env.CERAMIC_SCHEMA_TRANSFERX,
-        [window.idx.id],
+        [window.idx!.id]
       );
 
       setId(id);

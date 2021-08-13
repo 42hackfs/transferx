@@ -34,7 +34,13 @@ const useStyles = makeStyles((theme: Theme) => ({
 // @ts-ignore
 import { CopyToClipboard } from "react-copy-to-clipboard";
 
-function DisplayLink({ id }: { id: string }): React.ReactElement {
+function DisplayLink({
+  id,
+  setId,
+}: {
+  id: string;
+  setId: any;
+}): React.ReactElement {
   const { enqueueSnackbar } = useSnackbar();
 
   const classes = useStyles();
@@ -70,7 +76,7 @@ function DisplayLink({ id }: { id: string }): React.ReactElement {
         fullWidth
         variant="contained"
         color="primary"
-        onClick={() => window.location.reload(false)}
+        onClick={() => setId("")}
       >
         Create A New Transfer
       </Button>

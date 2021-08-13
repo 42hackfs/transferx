@@ -17,11 +17,10 @@ function MainLayout() {
   const connectToCeramic = () => {
     setLoading(true);
 
-    // STATE (1) => first call 
+    // STATE (1) => first call
     authenticate()
       .then((id) => {
         console.log("Connected to Ceramic:", id);
-        sessionStorage.setItem("ceramicId", id);
         setCeramicId(id);
         setLoading(false);
         // await idx.get("basicProfile", "<DID-or-caip10-id>");
@@ -29,15 +28,10 @@ function MainLayout() {
       })
       .catch((err) => {
         console.log(err);
-        sessionStorage.setItem("ceramicId", "");
         setCeramicId("");
         setLoading(false);
       });
   };
-
-  useEffect(() => {
-    setCeramicId(sessionStorage.getItem("ceramicId") || "");
-  }, []);
 
   return (
     <div
