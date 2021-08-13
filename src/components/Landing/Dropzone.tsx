@@ -14,6 +14,7 @@ import {
   TextField,
   Backdrop,
   CircularProgress,
+  Tooltip,
 } from "@material-ui/core";
 import { styled, Theme } from "@material-ui/core/styles";
 
@@ -88,6 +89,11 @@ function Dropzone({ setId }: { setId: any }): React.ReactElement {
       /* console.log('mmh ceramic', ceramic); */
       const caip10link = await getCryptoAccount();
 
+      console.log("Hey", window.ceramic);
+      console.log("Hey", window.idx);
+
+      console.log("lol", process.env.CERAMIC_SCHEMA_TRANSFERX);
+
       const ethAddress = Object.keys(caip10link)[0];
       const stream = await createStream(
         window.ceramic,
@@ -109,6 +115,13 @@ function Dropzone({ setId }: { setId: any }): React.ReactElement {
     } finally {
       setLoading(false);
     }
+  };
+
+  const buttonDisabed = () => {
+    if (!title || !window.ceramic || !window.idx || files.length == 0) {
+      return true;
+    }
+    return false;
   };
 
   return (
@@ -189,14 +202,25 @@ function Dropzone({ setId }: { setId: any }): React.ReactElement {
                 onChange={({ target }) => setMessage(target.value)}
               />
             </div>
-            <Button
-              variant="contained"
-              color="primary"
-              fullWidth
-              onClick={handleSubmit}
+            <Tooltip
+              title={
+                buttonDisabed()
+                  ? "You need to connect your wallet and enter a title before you can transfer files"
+                  : ""
+              }
             >
-              Transfer
-            </Button>
+              <span>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  fullWidth
+                  onClick={handleSubmit}
+                  disabled={buttonDisabed()}
+                >
+                  Transfer
+                </Button>
+              </span>
+            </Tooltip>
           </>
         )}
       </Card>
