@@ -83,8 +83,6 @@ function Dropzone({ setId }: { setId: any }): React.ReactElement {
     setLoading(true);
     try {
       const id = await storeWithProgress(files, setProgress, title);
-      /* const ceramic: CeramicApi = window.ceramic; */
-      /* console.log('mmh ceramic', ceramic); */
       const caip10link = await getCryptoAccount();
 
       const ethAddress = Object.keys(caip10link)[0];

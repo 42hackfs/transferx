@@ -24,7 +24,7 @@ import JSZip from "jszip";
 import { saveAs } from "file-saver";
 import { makeStyles } from "@material-ui/styles";
 
-import type { FileItem, FilesList } from "../ceramic/idx"
+import type { FileItem, FilesList } from "../ceramic/idx";
 
 const objectList = {
   arrayFiles: [{ title: "file1" }, { title: "file2" }, { title: "file3" }],
@@ -86,13 +86,19 @@ function HistoryPage(): React.ReactElement {
     history.push("/");
   };
 
+  const cropText = (text: string) => {
+    const croppedText =
+      text.substr(0, 17) + "..." + text.substr(text.length - 17, text.length);
+    return croppedText;
+  };
+
   useEffect(() => {
     async function retrieveIDX() {
       const idx = window.idx;
-      const listOfFiles = await idx.get<FilesList>('fileListDef');
+      const listOfFiles = await idx.get<FilesList>("fileListDef");
       /* const list = listOfFiles ? listOfFiles.files : [] */
 
-      console.log('array file ', listOfFiles)
+      console.log("array file ", listOfFiles);
       setUploadList(listOfFiles);
       setLoading(false);
     }
@@ -122,9 +128,17 @@ function HistoryPage(): React.ReactElement {
                       <Typography variant="subtitle2" color="initial">
                         {file.message}
                       </Typography>
-                      <Typography variant="body1">{file.CID}</Typography>
-                      <Typography variant="body1">{file.caip10Link}</Typography>
-                      <Typography variant="caption">{file.uploaderAddress}</Typography>
+                      <Typography variant="body1">
+                        <b>CID: </b>
+                        {cropText(file.CID)}
+                      </Typography>
+                      <Typography variant="body1">
+                        <b>Caip10: </b>
+                        {cropText(file.caip10Link)}
+                      </Typography>
+                      <Typography variant="caption">
+                        {file.uploaderAddress}
+                      </Typography>
                     </Box>
                   </DivStyle>
                 </ListItem>
