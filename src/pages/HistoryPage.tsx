@@ -24,7 +24,7 @@ import JSZip from "jszip";
 import { saveAs } from "file-saver";
 import { makeStyles } from "@material-ui/styles";
 
-import type { FileItem, FilesList } from "../ceramic/idx"
+import type { FileItem, FilesList } from "../ceramic/idx";
 
 const objectList = {
   arrayFiles: [{ title: "file1" }, { title: "file2" }, { title: "file3" }],
@@ -59,6 +59,8 @@ const DivStyle = styled("div")(({ theme }: { theme: Theme }) => ({
   alignItems: "center",
   padding: "5px 10px",
   border: "1px solid white",
+  // overflowWrap: "break-word",
+  wordBreak: "break-all",
   width: "100%",
   borderRadius: 5,
   gap: 10,
@@ -77,6 +79,12 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
+// const handleBox = (id: any) => {
+//   process.env.NODE_ENV == "development"
+//     ? window.open(`http://localhost:4000/#/transfer/${id}`, "_blank")
+//     : window.open(`${process.env.REACT_APP_TRANSFER_URL}/${id}`, "_blank");
+// };
+
 function HistoryPage(): React.ReactElement {
   const [uploadList, setUploadList] = useState<FilesList | null>(null);
   const [loading, setLoading] = useState(true);
@@ -89,10 +97,10 @@ function HistoryPage(): React.ReactElement {
   useEffect(() => {
     async function retrieveIDX() {
       const idx = window.idx;
-      const listOfFiles = await idx.get<FilesList>('fileListDef');
+      const listOfFiles = await idx.get<FilesList>("fileListDef");
       /* const list = listOfFiles ? listOfFiles.files : [] */
 
-      console.log('array file ', listOfFiles)
+      console.log("array file ", listOfFiles);
       setUploadList(listOfFiles);
       setLoading(false);
     }
@@ -115,6 +123,7 @@ function HistoryPage(): React.ReactElement {
               {uploadList?.files.map((file: any) => (
                 <ListItem key={file.title}>
                   <DivStyle>
+                    {/* <Box onClick={() => handleBox(file.CID)} p={1}> */}
                     <Box p={1}>
                       <Typography variant="subtitle1" color="initial">
                         {file.title}
@@ -124,7 +133,9 @@ function HistoryPage(): React.ReactElement {
                       </Typography>
                       <Typography variant="body1">{file.CID}</Typography>
                       <Typography variant="body1">{file.caip10Link}</Typography>
-                      <Typography variant="caption">{file.uploaderAddress}</Typography>
+                      <Typography variant="caption">
+                        {file.uploaderAddress}
+                      </Typography>
                     </Box>
                   </DivStyle>
                 </ListItem>
