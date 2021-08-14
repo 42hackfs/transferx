@@ -27,7 +27,6 @@ export async function createStream (
     console.log('StreamId is : ', streamId)
 
     const listOfFiles = await idx.get<FilesList>('fileListDef');
-    console.log('array file ', listOfFiles)
     const list = listOfFiles ? listOfFiles.files : []
 
     const rest = await idx.set('fileListDef', {

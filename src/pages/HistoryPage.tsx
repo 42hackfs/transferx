@@ -23,17 +23,8 @@ import { Web3File } from "web3.storage";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
 import { makeStyles } from "@material-ui/styles";
-interface TransferResponse {
-  address: string;
-  title: string;
-  message: string;
-  created: string;
-  files: Web3File[];
-}
 
-interface UploadList {
-  arrayFiles: { title: string }[];
-}
+import type { FileItem, FilesList } from "../ceramic/idx"
 
 const objectList = {
   arrayFiles: [{ title: "file1" }, { title: "file2" }, { title: "file3" }],
@@ -87,7 +78,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 function HistoryPage(): React.ReactElement {
-  const [uploadList, setUploadList] = useState<UploadList | null>(null);
+  const [uploadList, setUploadList] = useState<FilesList | null>(null);
   const [loading, setLoading] = useState(true);
   const classes = useStyles();
   const history = useHistory();
@@ -98,15 +89,11 @@ function HistoryPage(): React.ReactElement {
   useEffect(() => {
     async function retrieveIDX() {
       const idx = window.idx;
-      const fileList = await idx.get("FilesList");
-      const cryptoAccounts = await idx.get("cryptoAccounts");
-      const Transferx = await idx.get("Transferx");
-      console.log("crypto", cryptoAccounts);
-      console.log("Transferx:", Transferx);
-      console.log("filelist:", fileList);
-      // setUploadList(objectList);
-      setUploadList(null);
-      // console.log("uploadlist", uploadList);
+      const listOfFiles = await idx.get<FilesList>('fileListDef');
+      /* const list = listOfFiles ? listOfFiles.files : [] */
+
+      console.log('array file ', listOfFiles)
+      setUploadList(listOfFiles);
       setLoading(false);
     }
     retrieveIDX();
@@ -125,14 +112,19 @@ function HistoryPage(): React.ReactElement {
             </Backdrop>
           ) : uploadList ? (
             <List style={{ maxHeight: 280, overflowY: "auto" }}>
-              {uploadList?.arrayFiles.map((file: any) => (
+              {uploadList?.files.map((file: any) => (
                 <ListItem key={file.title}>
                   <DivStyle>
                     <Box p={1}>
                       <Typography variant="subtitle1" color="initial">
                         {file.title}
                       </Typography>
-                      <Typography variant="caption">link</Typography>
+                      <Typography variant="subtitle2" color="initial">
+                        {file.message}
+                      </Typography>
+                      <Typography variant="body1">{file.CID}</Typography>
+                      <Typography variant="body1">{file.caip10Link}</Typography>
+                      <Typography variant="caption">{file.uploaderAddress}</Typography>
                     </Box>
                   </DivStyle>
                 </ListItem>
