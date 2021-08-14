@@ -1,7 +1,7 @@
 import type { CeramicApi } from "@ceramicnetwork/common";
 import { IDX } from "@ceramicstudio/idx";
 
-import { definitions } from './config.json'
+import { definitions } from "./config.json";
 
 declare global {
   interface Window {
@@ -10,14 +10,15 @@ declare global {
 }
 
 export type FileItem = {
-  CID: string
-  title: string
-  message: string
-  caip10Link: string
-  uploaderAddress: string
-}
+  CID: string;
+  title: string;
+  message: string;
+  caip10Link: string;
+  uploaderAddress: string;
+  recipientAddress: string;
+};
 
-export type FilesList = { files: Array<FileItem> }
+export type FilesList = { files: Array<FileItem> };
 
 function createIDX(ceramic: CeramicApi): IDX {
   const idx = new IDX({ ceramic, aliases: definitions });
@@ -28,12 +29,12 @@ function createIDX(ceramic: CeramicApi): IDX {
 
 async function getCryptoAccount(): Promise<any> {
   if (!window.idx) {
-    window.idx = new IDX({ ceramic: window.ceramic})
+    window.idx = new IDX({ ceramic: window.ceramic });
   }
 
-  const ret = await window.idx.get('cryptoAccounts', window.ceramicId)
+  const ret = await window.idx.get("cryptoAccounts", window.ceramicId);
 
-  return ret
+  return ret;
 }
 
 export { createIDX, getCryptoAccount };

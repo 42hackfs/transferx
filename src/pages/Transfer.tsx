@@ -24,6 +24,7 @@ import JSZip from "jszip";
 import { saveAs } from "file-saver";
 import { makeStyles } from "@material-ui/styles";
 import CryptoJS from "crypto-js";
+import { authenticate } from "../ceramic";
 
 interface TransferResponse {
   address: string;
@@ -31,6 +32,11 @@ interface TransferResponse {
   message: string;
   created: string;
   files: Web3File[];
+}
+
+interface ParsedData {
+  schema: string;
+  files: string;
 }
 
 const ContentStyle = styled((props: BoxProps) => <Box {...props} />)(
@@ -69,7 +75,11 @@ const useStyles = makeStyles((theme: Theme) => ({
 function Transfer(): React.ReactElement {
   const [transfer, setTransfer] = useState<TransferResponse | null>(null);
   const [loading, setLoading] = useState(true);
+  const [locked, setLocked] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [data, setData] = useState<ParsedData | null>();
+  const [content, setContent] = useState<TransferResponse | null>();
+  const [buttonText, setButtonText] = useState("Unlock File");
   const [size, setSize] = useState("");
   const params = useParams<{ id: string }>();
   const { enqueueSnackbar } = useSnackbar();
@@ -107,44 +117,121 @@ function Transfer(): React.ReactElement {
     history.push("/");
   };
 
+  const unlockFile = () => {
+    setButtonText("Unlocking...");
+    authenticate()
+      .then(async (idx) => {
+        console.log("Connected to Ceramic:", idx.id);
+        const address = Object.keys(
+          (await idx.get("cryptoAccounts")) as any
+        )[0].split("@")[0];
+        if (address.toLowerCase() == transfer!.address!.toLowerCase()) {
+          const status = await checkStatus(data!.files);
+          const response = await retrieve(data!.files);
+
+          if (status.dagSize) {
+            setSize(formatBytes(status.dagSize));
+          }
+
+          if (!response.ok) {
+            enqueueSnackbar("Invalid Link!", { variant: "error" });
+          } else {
+            setTransfer({
+              address: "",
+              title: content!.title,
+              message: content!.message,
+              created: new Date().toISOString(),
+              files: [],
+            });
+          }
+          setLoading(false);
+
+          response.files().then((files: Web3File[]) => {
+            setTransfer({
+              address: "",
+              title: content!.title,
+              message: content!.message,
+              created: new Date().toISOString(),
+              files,
+            });
+          });
+
+          setLocked(false);
+        } else {
+          setButtonText("Not authorized!");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        setLocked(false);
+      });
+  };
+
   useEffect(() => {
     async function retrieveFiles() {
+      // Get the encoded URI
       const encrypted = decodeURI(params.id.replaceAll("*", "/"));
       const bytes = CryptoJS.AES.decrypt(encrypted, process.env.SECRET_KEY!);
       const jsonString = bytes.toString(CryptoJS.enc.Utf8);
-      const data = JSON.parse(jsonString);
 
-      const stream = await window.ceramic.loadStream(data.stream);
-      const content = (stream as any).content;
-      const response = await retrieve(data.files);
-      const status = await checkStatus(data.files);
+      try {
+        const data = JSON.parse(jsonString);
+        setData(data);
 
-      if (status.dagSize) {
-        setSize(formatBytes(status.dagSize));
-      }
+        // Get ceramic stream
+        const stream = await window.ceramic.loadStream(data.stream);
+        const content = (stream as any).content;
+        setContent(content);
 
-      if (!response.ok) {
+        // First, we check if the stream has locked content
+        if (content.recipientAddress != "") {
+          setLocked(true);
+          setTransfer({
+            address: content.recipientAddress,
+            title: "Locked",
+            message: "Unlock to download",
+            created: new Date().toISOString(),
+            files: [],
+          });
+
+          setLoading(false);
+        } else {
+          const status = await checkStatus(data.files);
+          const response = await retrieve(data.files);
+
+          if (status.dagSize) {
+            setSize(formatBytes(status.dagSize));
+          }
+
+          if (!response.ok) {
+            enqueueSnackbar("Invalid Link!", { variant: "error" });
+          } else {
+            setTransfer({
+              address: "",
+              title: content.title,
+              message: content.message,
+              created: new Date().toISOString(),
+              files: [],
+            });
+          }
+          setLoading(false);
+
+          response.files().then((files: Web3File[]) => {
+            setTransfer({
+              address: "",
+              title: content.title,
+              message: content.message,
+              created: new Date().toISOString(),
+              files,
+            });
+          });
+        }
+      } catch (err) {
+        console.log(err);
         enqueueSnackbar("Invalid Link!", { variant: "error" });
-      } else {
-        setTransfer({
-          address: "",
-          title: content.title,
-          message: content.message,
-          created: new Date().toISOString(),
-          files: [],
-        });
-      }
-      setLoading(false);
 
-      response.files().then((files: Web3File[]) => {
-        setTransfer({
-          address: "",
-          title: content.title,
-          message: content.message,
-          created: new Date().toISOString(),
-          files,
-        });
-      });
+        setLoading(false);
+      }
     }
 
     if (progress <= 0) {
@@ -167,6 +254,29 @@ function Transfer(): React.ReactElement {
                 style={{ color: "white", marginTop: "1rem" }}
               >{`Zipping... ${progress.toFixed(2)}% complete`}</h1>
             ) : null}
+          </Backdrop>
+        ) : locked ? (
+          <Backdrop
+            open={true}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              zIndex: 1,
+            }}
+          >
+            <Card>
+              <Typography variant="h4" color="initial">
+                This download is locked for {transfer?.address}
+              </Typography>
+              <Button
+                variant="contained"
+                color="primary"
+                fullWidth
+                onClick={unlockFile}
+              >
+                {buttonText}
+              </Button>
+            </Card>
           </Backdrop>
         ) : transfer ? (
           <Card>

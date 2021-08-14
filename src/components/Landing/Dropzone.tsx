@@ -59,6 +59,7 @@ function Dropzone({ setId }: { setId: any }): React.ReactElement {
   const [files, setFiles] = useState<File[]>([]);
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
+  const [recipient, setRecipient] = useState("");
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState("Uploading... 0.00% complete");
 
@@ -96,6 +97,7 @@ function Dropzone({ setId }: { setId: any }): React.ReactElement {
           message,
           caip10Link: caip10link[ethAddress],
           uploaderAddress: ethAddress,
+          recipientAddress: recipient,
         },
         (schemas as any).FileSchema,
         [window.idx!.id],
@@ -202,12 +204,21 @@ function Dropzone({ setId }: { setId: any }): React.ReactElement {
               />
               <TextField
                 id="message"
-                label="Message"
+                label="Message (optional)"
                 multiline
                 variant="outlined"
                 value={message}
                 onChange={({ target }) => setMessage(target.value)}
               />
+              <Tooltip title="Adding the recipient address will lock it so only the owner of the address can download this file">
+                <TextField
+                  id="recipient"
+                  label="Recipient Address (optional)"
+                  variant="outlined"
+                  value={recipient}
+                  onChange={({ target }) => setRecipient(target.value)}
+                />
+              </Tooltip>
             </div>
             <Tooltip
               title={
