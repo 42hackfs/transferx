@@ -54,19 +54,6 @@ const config: webpack.Configuration = {
       extensions: ["js", "jsx", "ts", "tsx"],
     }),
     new Dotenv(),
-    new webpack.DefinePlugin({
-      "process.browser": JSON.stringify(""),
-      "process.env.CONNECT_IFRAME_URL": JSON.stringify(
-        "https://app-clay.3idconnect.org"
-      ),
-      "process.env.CONNECT_MANAGE_URL": JSON.stringify(
-        "https://app-clay.3idconnect.org/management/index.html"
-      ),
-      "process.env.NODE_ENV": JSON.stringify("development"),
-      "process.env.REACT_APP_MYAPP": JSON.stringify(
-        process.env.REACT_APP_MYAPP
-      ),
-    }),
   ],
   devtool: "inline-source-map",
   devServer: {
