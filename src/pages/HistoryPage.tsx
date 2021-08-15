@@ -59,6 +59,8 @@ const DivStyle = styled("div")(({ theme }: { theme: Theme }) => ({
   alignItems: "center",
   padding: "5px 10px",
   border: "1px solid white",
+  // overflowWrap: "break-word",
+  wordBreak: "break-all",
   width: "100%",
   borderRadius: 5,
   gap: 10,
@@ -77,6 +79,12 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
+// const handleBox = (id: any) => {
+//   process.env.NODE_ENV == "development"
+//     ? window.open(`http://localhost:4000/#/transfer/${id}`, "_blank")
+//     : window.open(`${process.env.REACT_APP_TRANSFER_URL}/${id}`, "_blank");
+// };
+
 function HistoryPage(): React.ReactElement {
   const [uploadList, setUploadList] = useState<FilesList | null>(null);
   const [loading, setLoading] = useState(true);
@@ -84,12 +92,6 @@ function HistoryPage(): React.ReactElement {
   const history = useHistory();
   const backToHome = () => {
     history.push("/");
-  };
-
-  const cropText = (text: string) => {
-    const croppedText =
-      text.substr(0, 17) + "..." + text.substr(text.length - 17, text.length);
-    return croppedText;
   };
 
   useEffect(() => {
@@ -121,6 +123,7 @@ function HistoryPage(): React.ReactElement {
               {uploadList?.files.map((file: any) => (
                 <ListItem key={file.title}>
                   <DivStyle>
+                    {/* <Box onClick={() => handleBox(file.CID)} p={1}> */}
                     <Box p={1}>
                       <Typography variant="subtitle1" color="initial">
                         {file.title}
@@ -128,14 +131,8 @@ function HistoryPage(): React.ReactElement {
                       <Typography variant="subtitle2" color="initial">
                         {file.message}
                       </Typography>
-                      <Typography variant="body1">
-                        <b>CID: </b>
-                        {cropText(file.CID)}
-                      </Typography>
-                      <Typography variant="body1">
-                        <b>Caip10: </b>
-                        {cropText(file.caip10Link)}
-                      </Typography>
+                      <Typography variant="body1">{file.CID}</Typography>
+                      <Typography variant="body1">{file.caip10Link}</Typography>
                       <Typography variant="caption">
                         {file.uploaderAddress}
                       </Typography>
