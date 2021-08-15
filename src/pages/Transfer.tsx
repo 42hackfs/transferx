@@ -127,7 +127,7 @@ function Transfer(): React.ReactElement {
         const address = Object.keys(
           (await idx.get("cryptoAccounts")) as any
         )[0].split("@")[0];
-        if (address.toLowerCase() == transfer!.uploaderAddress!.toLowerCase()) {
+        if (address.toLowerCase() == transfer!.address!.toLowerCase()) {
           const status = await checkStatus(data!.files);
           const response = await retrieve(data!.files);
 
@@ -294,7 +294,7 @@ function Transfer(): React.ReactElement {
           >
             <Card>
               <Typography variant="h4" color="initial">
-                This download is locked for {transfer?.uploaderAddress}
+                This download is locked for {transfer?.address}
               </Typography>
               <Button
                 variant="contained"
