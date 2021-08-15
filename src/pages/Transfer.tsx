@@ -31,6 +31,7 @@ interface TransferResponse {
   title: string;
   message: string;
   created: string;
+  caip10Link: string;
   files: Web3File[];
 }
 
@@ -137,10 +138,11 @@ function Transfer(): React.ReactElement {
             enqueueSnackbar("Invalid Link!", { variant: "error" });
           } else {
             setTransfer({
-              address: "",
+              address: content!.uploaderAddress,
               title: content!.title,
               message: content!.message,
               created: new Date().toISOString(),
+              caip10Link: content!.caip10Link,
               files: [],
             });
           }
@@ -148,10 +150,11 @@ function Transfer(): React.ReactElement {
 
           response.files().then((files: Web3File[]) => {
             setTransfer({
-              address: "",
+              address: content!.uploaderAddress,
               title: content!.title,
               message: content!.message,
               created: new Date().toISOString(),
+              caip10Link: content!.caip10Link,
               files,
             });
           });
@@ -179,9 +182,10 @@ function Transfer(): React.ReactElement {
       enqueueSnackbar("Invalid Link!", { variant: "error" });
     } else {
       setTransfer({
-        address: "",
+        address: content.uploaderAddress,
         title: content.title,
         message: content.message,
+        caip10Link: content!.caip10Link,
         created: new Date().toISOString(),
         files: [],
       });
@@ -190,9 +194,10 @@ function Transfer(): React.ReactElement {
 
     response.files().then((files: Web3File[]) => {
       setTransfer({
-        address: "",
+        address: content!.uploaderAddress,
         title: content.title,
         message: content.message,
+        caip10Link: content!.caip10Link,
         created: new Date().toISOString(),
         files,
       });
@@ -224,6 +229,7 @@ function Transfer(): React.ReactElement {
               title: "Locked",
               message: "Unlock to download",
               created: new Date().toISOString(),
+              caip10Link: content!.caip10Link,
               files: [],
             });
 
@@ -294,14 +300,23 @@ function Transfer(): React.ReactElement {
           </Backdrop>
         ) : transfer ? (
           <Card>
-            <Typography variant="h4" color="initial">
+            <Typography variant="h3" color="initial">
               You&apos;ve got mail 📬
             </Typography>
-            <Box p={3} style={{ borderRadius: 5, border: "1px solid white" }}>
-              <Typography variant="subtitle1" color="initial">
+            <Box
+              p={3}
+              style={{
+                borderRadius: 5,
+                border: "1px solid white",
+                wordBreak: "break-all",
+              }}
+            >
+              <Typography variant="h4" color="initial">
                 {transfer.title}
               </Typography>
-              <Typography variant="caption">{transfer.message}</Typography>
+              <Typography variant="subtitle1">{transfer.message}</Typography>
+              <Typography variant="caption">{transfer.address}</Typography>
+              <Typography variant="caption">{transfer.address}</Typography>
             </Box>
             {transfer.files.length == 0 ? (
               <div>
