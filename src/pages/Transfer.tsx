@@ -31,8 +31,9 @@ interface TransferResponse {
   title: string;
   message: string;
   created: string;
-  caip10Link: string;
   files: Web3File[];
+  uploaderAddress: string;
+  caip10Link: string;
 }
 
 interface ParsedData {
@@ -138,24 +139,26 @@ function Transfer(): React.ReactElement {
             enqueueSnackbar("Invalid Link!", { variant: "error" });
           } else {
             setTransfer({
-              address: content!.uploaderAddress,
+              address: "",
               title: content!.title,
               message: content!.message,
               created: new Date().toISOString(),
-              caip10Link: content!.caip10Link,
               files: [],
+              uploaderAddress: content!.uploaderAddress,
+              caip10Link: content!.caip10Link,
             });
           }
           setLoading(false);
 
           response.files().then((files: Web3File[]) => {
             setTransfer({
-              address: content!.uploaderAddress,
+              address: "",
               title: content!.title,
               message: content!.message,
               created: new Date().toISOString(),
-              caip10Link: content!.caip10Link,
               files,
+              uploaderAddress: content!.uploaderAddress,
+              caip10Link: content!.caip10Link,
             });
           });
 
@@ -182,24 +185,26 @@ function Transfer(): React.ReactElement {
       enqueueSnackbar("Invalid Link!", { variant: "error" });
     } else {
       setTransfer({
-        address: content.uploaderAddress,
+        address: "",
         title: content.title,
         message: content.message,
-        caip10Link: content!.caip10Link,
         created: new Date().toISOString(),
         files: [],
+        uploaderAddress: content.uploaderAddress,
+        caip10Link: content.caip10Link,
       });
     }
     setLoading(false);
 
     response.files().then((files: Web3File[]) => {
       setTransfer({
-        address: content!.uploaderAddress,
+        address: "",
         title: content.title,
         message: content.message,
-        caip10Link: content!.caip10Link,
         created: new Date().toISOString(),
         files,
+        uploaderAddress: content.uploaderAddress,
+        caip10Link: content.caip10Link,
       });
     });
   };
@@ -229,8 +234,9 @@ function Transfer(): React.ReactElement {
               title: "Locked",
               message: "Unlock to download",
               created: new Date().toISOString(),
-              caip10Link: content!.caip10Link,
               files: [],
+              uploaderAddress: content.uploaderAddress,
+              caip10Link: content.caip10Link,
             });
 
             setLoading(false);
@@ -242,6 +248,8 @@ function Transfer(): React.ReactElement {
             {
               title: "Saturn",
               message: "P2P decentralized file sharing application",
+              uploaderAddress: "",
+              caip10Link: "",
             },
             data
           );
@@ -315,8 +323,9 @@ function Transfer(): React.ReactElement {
                 {transfer.title}
               </Typography>
               <Typography variant="subtitle1">{transfer.message}</Typography>
-              <Typography variant="caption">{transfer.address}</Typography>
-              <Typography variant="caption">{transfer.address}</Typography>
+              <Typography variant="caption">
+                {transfer.uploaderAddress}
+              </Typography>
             </Box>
             {transfer.files.length == 0 ? (
               <div>
