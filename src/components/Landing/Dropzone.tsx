@@ -83,24 +83,29 @@ function Dropzone({ setId }: { setId: any }): React.ReactElement {
     setLoading(true);
     try {
       const id = await storeWithProgress(files, setProgress, title);
-      const caip10link = await getCryptoAccount();
 
-      const ethAddress = Object.keys(caip10link)[0];
+      const ceramicId = window.sessionStorage.getItem("ceramicId");
+      let streamId = "";
 
-      const streamId = await createStream(
-        window.ceramic,
-        {
-          CID: id,
-          title,
-          message,
-          caip10Link: caip10link[ethAddress],
-          uploaderAddress: ethAddress,
-          recipientAddress: recipient,
-        },
-        (schemas as any).FileSchema,
-        [window.idx!.id],
-        window.idx
-      );
+      if (ceramicId) {
+        const caip10link = await getCryptoAccount();
+        const ethAddress = Object.keys(caip10link)[0];
+
+        streamId = await createStream(
+          window.ceramic,
+          {
+            CID: id,
+            title,
+            message,
+            caip10Link: caip10link[ethAddress],
+            uploaderAddress: ethAddress,
+            recipientAddress: recipient,
+          },
+          (schemas as any).FileSchema,
+          [window.idx!.id],
+          window.idx
+        );
+      }
 
       // Right here we want to encrypt the streamId + web3storage link
       const data = JSON.stringify({
@@ -125,7 +130,7 @@ function Dropzone({ setId }: { setId: any }): React.ReactElement {
   };
 
   const buttonDisabed = () => {
-    if (!title || !window.ceramic || !window.idx || files.length == 0) {
+    if (files.length == 0) {
       return true;
     }
     return false;
@@ -193,19 +198,29 @@ function Dropzone({ setId }: { setId: any }): React.ReactElement {
                 justifyContent: "center",
               }}
             >
-              <TextField
-                id="title"
-                label="Title"
-                variant="outlined"
-                value={title}
-                onChange={({ target }) => setTitle(target.value)}
-              />
+              <Tooltip
+                title={
+                  !window.ceramic || !window.idx
+                    ? "You can only add a title after connecting your wallet"
+                    : ""
+                }
+              >
+                <TextField
+                  id="title"
+                  label="Title"
+                  variant="outlined"
+                  value={title}
+                  disabled={!window.ceramic || !window.idx}
+                  onChange={({ target }) => setTitle(target.value)}
+                />
+              </Tooltip>
               <TextField
                 id="message"
                 label="Message (optional)"
                 multiline
                 variant="outlined"
                 value={message}
+                disabled={!window.ceramic || !window.idx}
                 onChange={({ target }) => setMessage(target.value)}
               />
               <Tooltip title="Adding the recipient address will lock it so only the owner of the address can download this file">
@@ -214,6 +229,7 @@ function Dropzone({ setId }: { setId: any }): React.ReactElement {
                   label="Recipient Address (optional)"
                   variant="outlined"
                   value={recipient}
+                  disabled={!window.ceramic || !window.idx}
                   onChange={({ target }) => setRecipient(target.value)}
                 />
               </Tooltip>
@@ -221,7 +237,7 @@ function Dropzone({ setId }: { setId: any }): React.ReactElement {
             <Tooltip
               title={
                 buttonDisabed()
-                  ? "You need to connect your wallet and enter a title before you can transfer files"
+                  ? "You need to select at least one file to transfer"
                   : ""
               }
             >

@@ -23,7 +23,6 @@ export async function getProvider(): Promise<DIDProvider> {
   await threeID.connect(ethAuthProvider);
 
   window.ethAuthProvider = ethAuthProvider;
-  console.log("past threeId");
 
   return threeID.getDidProvider();
 }

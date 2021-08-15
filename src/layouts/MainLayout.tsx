@@ -22,11 +22,13 @@ function MainLayout() {
       .then(async (idx) => {
         console.log("Connected to Ceramic:", idx.id);
         setCeramicId(idx.id);
+        window.sessionStorage.setItem("ceramicId", idx.id);
         setLoading(false);
       })
       .catch((err) => {
         console.log(err);
         setCeramicId("");
+        window.sessionStorage.setItem("ceramicId", "");
         setLoading(false);
       });
   };

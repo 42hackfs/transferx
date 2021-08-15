@@ -167,6 +167,38 @@ function Transfer(): React.ReactElement {
       });
   };
 
+  const getFiles = async (content: any, data: any) => {
+    const status = await checkStatus(data.files);
+    const response = await retrieve(data.files);
+
+    if (status.dagSize) {
+      setSize(formatBytes(status.dagSize));
+    }
+
+    if (!response.ok) {
+      enqueueSnackbar("Invalid Link!", { variant: "error" });
+    } else {
+      setTransfer({
+        address: "",
+        title: content.title,
+        message: content.message,
+        created: new Date().toISOString(),
+        files: [],
+      });
+    }
+    setLoading(false);
+
+    response.files().then((files: Web3File[]) => {
+      setTransfer({
+        address: "",
+        title: content.title,
+        message: content.message,
+        created: new Date().toISOString(),
+        files,
+      });
+    });
+  };
+
   useEffect(() => {
     async function retrieveFiles() {
       // Get the encoded URI
@@ -178,53 +210,35 @@ function Transfer(): React.ReactElement {
         const data = JSON.parse(jsonString);
         setData(data);
 
-        // Get ceramic stream
-        const stream = await window.ceramic.loadStream(data.stream);
-        const content = (stream as any).content;
-        setContent(content);
+        if (data.stream) {
+          // Get ceramic stream
+          const stream = await window.ceramic.loadStream(data.stream);
+          const content = (stream as any).content;
+          setContent(content);
 
-        // First, we check if the stream has locked content
-        if (content.recipientAddress != "") {
-          setLocked(true);
-          setTransfer({
-            address: content.recipientAddress,
-            title: "Locked",
-            message: "Unlock to download",
-            created: new Date().toISOString(),
-            files: [],
-          });
-
-          setLoading(false);
-        } else {
-          const status = await checkStatus(data.files);
-          const response = await retrieve(data.files);
-
-          if (status.dagSize) {
-            setSize(formatBytes(status.dagSize));
-          }
-
-          if (!response.ok) {
-            enqueueSnackbar("Invalid Link!", { variant: "error" });
-          } else {
+          // First, we check if the stream has locked content
+          if (content.recipientAddress != "") {
+            setLocked(true);
             setTransfer({
-              address: "",
-              title: content.title,
-              message: content.message,
+              address: content.recipientAddress,
+              title: "Locked",
+              message: "Unlock to download",
               created: new Date().toISOString(),
               files: [],
             });
-          }
-          setLoading(false);
 
-          response.files().then((files: Web3File[]) => {
-            setTransfer({
-              address: "",
-              title: content.title,
-              message: content.message,
-              created: new Date().toISOString(),
-              files,
-            });
-          });
+            setLoading(false);
+          } else {
+            await getFiles(content, data);
+          }
+        } else {
+          await getFiles(
+            {
+              title: "Saturn",
+              message: "P2P decentralized file sharing application",
+            },
+            data
+          );
         }
       } catch (err) {
         console.log(err);

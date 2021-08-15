@@ -17,6 +17,5 @@ export async function createCeramic(): Promise<CeramicApi> {
   // STATE (3) => this should go in a global state instead of window
   window.ceramic = ceramic;
   window.TileDocument = TileDocument;
-  console.log("past createCeramic");
   return Promise.resolve(ceramic as CeramicApi);
 }
