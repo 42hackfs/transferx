@@ -31,17 +31,23 @@ const authenticate = async (): Promise<IDX> => {
     ...threeIdResolver,
     ...keyDidResolver,
   };
+
+  console.log("got resolvers");
   const did = new DID({
     provider: provider,
     resolver: resolverRegistry,
   });
   await did.authenticate();
+  console.log("authed");
   await ceramic.setDID(did);
+  console.log("set did");
 
   // STATE (2) => this is where the idx instance is created
   const idx = createIDX(ceramic);
+  console.log("create IDX");
 
   const accountLink = createCaip10Link(ceramic);
+  console.log("caip10");
 
   window.did = ceramic.did;
   window.ceramic = ceramic;

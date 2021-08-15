@@ -21,8 +21,9 @@ export async function getProvider(): Promise<DIDProvider> {
   const accounts = await ethereum.request({ method: "eth_requestAccounts" });
   const ethAuthProvider = new EthereumAuthProvider(ethereum, accounts[0]);
   await threeID.connect(ethAuthProvider);
-  
+
   window.ethAuthProvider = ethAuthProvider;
+  console.log("past threeId");
 
   return threeID.getDidProvider();
 }
