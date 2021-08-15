@@ -27,7 +27,7 @@ import CryptoJS from "crypto-js";
 import { authenticate } from "../ceramic";
 
 interface TransferResponse {
-  address: string;
+  uploaderAddress: string;
   title: string;
   message: string;
   created: string;
@@ -126,7 +126,7 @@ function Transfer(): React.ReactElement {
         const address = Object.keys(
           (await idx.get("cryptoAccounts")) as any
         )[0].split("@")[0];
-        if (address.toLowerCase() == transfer!.address!.toLowerCase()) {
+        if (address.toLowerCase() == transfer!.uploaderAddress!.toLowerCase()) {
           const status = await checkStatus(data!.files);
           const response = await retrieve(data!.files);
 
@@ -138,7 +138,7 @@ function Transfer(): React.ReactElement {
             enqueueSnackbar("Invalid Link!", { variant: "error" });
           } else {
             setTransfer({
-              address: content!.uploaderAddress,
+              uploaderAddress: content!.uploaderAddress,
               title: content!.title,
               message: content!.message,
               created: new Date().toISOString(),
@@ -150,7 +150,7 @@ function Transfer(): React.ReactElement {
 
           response.files().then((files: Web3File[]) => {
             setTransfer({
-              address: content!.uploaderAddress,
+              uploaderAddress: content!.uploaderAddress,
               title: content!.title,
               message: content!.message,
               created: new Date().toISOString(),
@@ -182,7 +182,7 @@ function Transfer(): React.ReactElement {
       enqueueSnackbar("Invalid Link!", { variant: "error" });
     } else {
       setTransfer({
-        address: content.uploaderAddress,
+        uploaderAddress: content.uploaderAddress,
         title: content.title,
         message: content.message,
         caip10Link: content!.caip10Link,
@@ -194,7 +194,7 @@ function Transfer(): React.ReactElement {
 
     response.files().then((files: Web3File[]) => {
       setTransfer({
-        address: content!.uploaderAddress,
+        uploaderAddress: content!.uploaderAddress,
         title: content.title,
         message: content.message,
         caip10Link: content!.caip10Link,
@@ -225,7 +225,7 @@ function Transfer(): React.ReactElement {
           if (content.recipientAddress != "") {
             setLocked(true);
             setTransfer({
-              address: content.recipientAddress,
+              uploaderAddress: content.recipientAddress,
               title: "Locked",
               message: "Unlock to download",
               created: new Date().toISOString(),
@@ -286,7 +286,7 @@ function Transfer(): React.ReactElement {
           >
             <Card>
               <Typography variant="h4" color="initial">
-                This download is locked for {transfer?.address}
+                This download is locked for {transfer?.uploaderAddress}
               </Typography>
               <Button
                 variant="contained"
@@ -315,8 +315,10 @@ function Transfer(): React.ReactElement {
                 {transfer.title}
               </Typography>
               <Typography variant="subtitle1">{transfer.message}</Typography>
-              <Typography variant="caption">{transfer.address}</Typography>
-              <Typography variant="caption">{transfer.address}</Typography>
+              <Typography variant="caption">
+                {transfer.uploaderAddress}
+              </Typography>
+              <Typography variant="caption">{transfer.caip10Link}</Typography>
             </Box>
             {transfer.files.length == 0 ? (
               <div>
