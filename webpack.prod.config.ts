@@ -4,6 +4,7 @@ import HtmlWebpackPlugin from "html-webpack-plugin";
 import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 import ESLintPlugin from "eslint-webpack-plugin";
 import { CleanWebpackPlugin } from "clean-webpack-plugin";
+import WebpackPwaManifest from "webpack-pwa-manifest";
 const Dotenv = require("dotenv-webpack");
 
 const config: webpack.Configuration = {
@@ -56,6 +57,25 @@ const config: webpack.Configuration = {
     }),
     new CleanWebpackPlugin(),
     new Dotenv(),
+    new WebpackPwaManifest({
+      name: "saturn",
+      short_name: "saturn",
+      icons: [
+        {
+          src: path.resolve("public/favicon/android-chrome-192x192.png"),
+          size: "192x192",
+          type: "image/png",
+        },
+        {
+          src: path.resolve("public/favicon/android-chrome-512x512.png"),
+          size: "512x512",
+          type: "image/png",
+        },
+      ],
+      theme_color: "#ffffff",
+      background_color: "#ffffff",
+      display: "standalone",
+    }),
   ],
 };
 

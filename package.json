@@ -50,6 +50,7 @@
     "skynet-js": "^3.0.2",
     "uint8arrays": "^2.1.10",
     "web3.storage": "^3.1.0",
+    "webpack-pwa-manifest": "^4.3.0",
     "yarn": "^1.22.11",
     "yup": "^0.32.9"
   },
